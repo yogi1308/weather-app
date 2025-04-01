@@ -149,3 +149,15 @@ input#city {
     text-transform: capitalize;
 }
 
+.other-details {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    font-size: 1.0rem;
+    border-top: 2px solid white;
+    padding-top: 10px;
+    margin-top: 10px;
+}
+
+.wind, .uv-index, .sunset {
+    text-align: right;
+}

@@ -18,7 +18,17 @@ async function displayBasicDetails() {
     appendElements('.max', weather.days[0].feelslikemax + '°F')
     appendElements('.min', weather.days[0].feelslikemin + '°F')
     appendElements('.feels-like', 'Feels like ' + weather.currentConditions.feelslike + '°F')
-    appendElements('.humidity', 'Humidity ' + weather.currentConditions.humidity + '%')
+    appendElements('.humidity', 'Humidity: ' + weather.currentConditions.humidity + '%')
+    appendElements('.wind', `Wind: ${weather.currentConditions.windspeed} mph ${getWindDirection(weather.currentConditions.winddir)}`);
+    appendElements('.sunrise', 'Sunrise: ' + weather.currentConditions.sunrise)
+    appendElements('.sunset', 'Sunset: ' + weather.currentConditions.sunset)
+    appendElements('.uv-index', 'UV-Index: ' + weather.currentConditions.uvindex)
+}
+
+function getWindDirection(degrees) {
+    const directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+    const index = Math.round((degrees % 360) / 45);
+    return directions[index % 8];
 }
 
 function appendElements(child, text) {
