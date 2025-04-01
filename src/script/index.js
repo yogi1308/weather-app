@@ -14,6 +14,11 @@ async function displayBasicDetails() {
     appendElements('.weather-description', weather.currentConditions.conditions)
     appendElements('.location', weather.resolvedAddress)
     appendElements('.temp', weather.currentConditions.temp + '°F')
+    appendElements('.date', weather.days[0].datetime.split('-').reverse().join(' / '));
+    appendElements('.max', weather.days[0].feelslikemax + '°F')
+    appendElements('.min', weather.days[0].feelslikemin + '°F')
+    appendElements('.feels-like', 'Feels like ' + weather.currentConditions.feelslike + '°F')
+    appendElements('.humidity', 'Humidity ' + weather.currentConditions.humidity + '%')
 }
 
 function appendElements(child, text) {

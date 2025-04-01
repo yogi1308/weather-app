@@ -54,7 +54,7 @@ h1, h2, h3, h4, h5, h6 {
 
 #content {
     font-family: 'Roboto', sans-serif;
-    background: linear-gradient(to bottom, #a7e1f7, #3db1f9);
+    background: linear-gradient(to right, #8eccdb, #5eb3d8);
 }
 
 .header {
@@ -105,3 +105,47 @@ input#city {
     background-position: center;
     margin: 0px 10px;
 }
+
+.basic-info {
+    position: absolute;
+    top: 30%;
+    left: 5%;
+    font-size: 1.2rem;
+    color: white;
+    text-shadow:  
+        1px 1px 0.25px gray,  /* Bottom-right */
+        -1px -1px 0.25px gray, /* Top-left */
+        -1px 1px 0.25px gray,  /* Bottom-left */
+        1px -1px 0.25px gray;  /* Top-right */
+}
+
+.location {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.temp {
+    font-size: 3rem;
+    font-weight: bold;
+}
+
+.all-temp {
+    display: flex;
+    gap: 10px;
+    flex-direction: row;
+}
+
+.min-max {
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+    border-left: 2px solid white;
+    padding-left: 5px;
+}
+
+.weather-description {
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-transform: capitalize;
+}
+
