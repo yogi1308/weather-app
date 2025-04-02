@@ -99,16 +99,20 @@ input#city {
 .basic-weather-details {
     border-radius: 20px;
     padding: 10px;
-    min-height: 100vh;
+    min-height: 95vh;
     background-image: url('/home/yogi/weather-app/src/assets/weather-images/image_fx_.jpg');
     background-size: cover;
     background-position: center;
     margin: 0px 10px;
+    box-sizing: border-box;
 }
 
 .basic-info {
+    padding-left: 20px;
+    width: 90%;
+    box-sizing: border-box;
     position: absolute;
-    top: 30%;
+    top: 25%;
     left: 5%;
     font-size: 1.2rem;
     color: white;
@@ -139,8 +143,12 @@ input#city {
     display: flex;
     gap: 10px;
     flex-direction: column;
-    border-left: 2px solid white;
+    border-left: 3px ridge white;
     padding-left: 5px;
+    justify-content: space-between;
+    line-height: 1;
+    height: max-content;
+    align-self: center;
 }
 
 .weather-description {
@@ -151,18 +159,22 @@ input#city {
 
 .other-details {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    font-size: 1.0rem;
-    border-top: 2px solid white;
+    grid-template-columns: repeat(2, max-content);
+    font-size: 1rem;
     padding-top: 10px;
     margin-top: 10px;
+    column-gap: 20px;
+    max-width: 92.5%;
+    box-sizing: border-box;
+    width: fit-content;
+    border-top: 3px ridge white;
 }
 
-.wind, .uv-index, .sunset {
+/* .wind, .uv-index, .sunset {
     text-align: right;
-}
+} */
 
-.by-hours {
+.by-hours, .by-days {
     border-radius: 20px;
     margin: 10px;
     display: flex;
@@ -190,6 +202,12 @@ div.hour-weather {
     padding: 10px
 }
 
+.next-hours, .next-days {
+    color: white;
+    font-size: 1.75rem;
+    font-weight: bold;
+    margin: 10px;
+}
 
 /* Entire scrollbar container */
 ::-webkit-scrollbar {

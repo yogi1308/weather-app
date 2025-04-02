@@ -19,12 +19,18 @@ async function displayBasicDetails() {
     appendElements('.max', weather.days[0].feelslikemax + '°F')
     appendElements('.min', weather.days[0].feelslikemin + '°F')
     appendElements('.feels-like', 'Feels like ' + weather.currentConditions.feelslike + '°F')
-    appendElements('.humidity', 'Humidity: ' + weather.currentConditions.humidity + '%')
-    appendElements('.wind', `Wind: ${weather.currentConditions.windspeed} mph ${getWindDirection(weather.currentConditions.winddir)}`);
-    appendElements('.sunrise', 'Sunrise: ' + weather.currentConditions.sunrise)
-    appendElements('.sunset', 'Sunset: ' + weather.currentConditions.sunset)
-    appendElements('.uv-index', 'UV-Index: ' + weather.currentConditions.uvindex)
-    appendElements('.precipitation-chances', 'Precipitation: ' + weather.currentConditions.precipprob + '%')
+    appendElements('.humidity', 'Humidity')
+    appendElements('.humidity-value', + weather.currentConditions.humidity + '%');
+    appendElements('.wind', 'Wind');
+    appendElements('.wind-value', `${weather.currentConditions.windspeed} mph ${getWindDirection(weather.currentConditions.winddir)}`);
+    appendElements('.sunrise', 'Sunrise')
+    appendElements('.sunrise-value', weather.currentConditions.sunrise)
+    appendElements('.sunset', 'Sunset')
+    appendElements('.sunset-value', weather.currentConditions.sunset)
+    appendElements('.uv-index', 'UV-Index')
+    appendElements('.uv-index-value', weather.currentConditions.uvindex)
+    appendElements('.precipitation-chances', 'Precipitation')
+    appendElements('.precipitation-chances-value', weather.currentConditions.precipprob + '%')
 }
 
 function getWindDirection(degrees) {
@@ -35,7 +41,7 @@ function getWindDirection(degrees) {
 
 function appendElements(child, text) {
     const childDiv = document.querySelector(child)
-    childDiv.textContent = text
+    childDiv.innerHTML = text
 }
 
 function displayHours() {
@@ -68,6 +74,36 @@ function displayHours() {
     hourlyWeatherDiv.appendChild(hourWeather)
 }
 
+function displayDays() {
+    const hourWeather = document.createElement('div')
+    hourWeather.classList.add('hour-weather')
+    const time = document.createElement('div')
+    time.classList.add('hour-time')
+    const temp = document.createElement('div')
+    temp.classList.add('hour-temp')
+    const hourWeatherDescription = document.createElement('div')
+    hourWeatherDescription.classList.add('hour-weather-desc')
+    const precipitationProb = document.createElement('div')
+    precipitationProb.classList.add('hour-precip-prob')
+    const windSpeed = document.createElement('div')
+    windSpeed.classList.add('hour-wind-speed')
+    const icon = document.createElement('img')
+    time.textContent = '12:00 AM'
+    temp.textContent = '72°F'
+    hourWeatherDescription.textContent = 'Partially Cloudy'
+    precipitationProb.textContent = '0%'
+    windSpeed.textContent = '0 mph'
+    icon.src = 'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/icons/clear-day.png'
+    hourWeather.appendChild(time)
+    hourWeather.appendChild(temp)
+    hourWeather.appendChild(icon)
+    hourWeather.appendChild(hourWeatherDescription)
+    hourWeather.appendChild(precipitationProb)
+    hourWeather.appendChild(windSpeed)
+    const hourlyWeatherDiv = document.querySelector('.by-days')
+    hourlyWeatherDiv.appendChild(hourWeather)
+}
+
 async function displayWeatherByHours() {
     const hourlyWeatherDiv = document.querySelector('.hourly-weather')
     let weather = await getWeather()
@@ -93,4 +129,31 @@ async function displayWeatherByHours() {
     displayHours()
     displayHours()
     displayHours()
+
+
+
+    displayDays()
+    displayDays()
+    displayDays()
+    displayDays()
+    displayDays()
+    displayDays()
+    displayDays()
+    displayDays()
+    displayDays()
+    displayDays()
+    displayDays()
+    displayDays()
+    displayDays()
+    displayDays()
+    displayDays()
+    displayDays()
+    displayDays()
+    displayDays()
+    displayDays()
+    displayDays()
+    displayDays()
+    displayDays()
+    displayDays()
+    displayDays()
 }
