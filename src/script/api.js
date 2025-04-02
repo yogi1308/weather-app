@@ -4,7 +4,7 @@ export {getWeather}
 // console.log(weather);
 
 
-const key = 'W2FDGJ2MLL2LU727Y6D8PWFW5'
+const key = '96QA75TCRT7MJRC6AV596A8Q8' // W2FDGJ2MLL2LU727Y6D8PWFW5, 96QA75TCRT7MJRC6AV596A8Q8
 const baseURL = 'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/'
 
 async function getWeather() {

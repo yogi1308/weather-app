@@ -1,7 +1,16 @@
+import {format, parseISO} from 'date-fns'
 import {getWindDirection, appendElements} from './helperFunctions.js'
 import {getWeather} from './api.js'
 
-export {displayHours, displayDays, displayBasicDetails}
+export {displayHours, displayDays, displayBasicDetails, updateTimeDisplay}
+
+const now = new Date();
+
+function updateTimeDisplay() {
+    const now = new Date();
+    const formattedTime = format(now, 'hh:mm:ss a'); // e.g., "12:00:00 AM"
+    document.querySelector('.time').innerHTML = '&nbsp' + formattedTime;
+}
 
 async function displayBasicDetails() {
     let weather = await getWeather()
@@ -9,7 +18,7 @@ async function displayBasicDetails() {
     appendElements('.weather-description', weather.currentConditions.conditions)
     appendElements('.location', weather.resolvedAddress)
     appendElements('.temp', weather.currentConditions.temp + '°F')
-    appendElements('.date', weather.days[0].datetime.split('-').reverse().join(' / '));
+    appendElements('.date', format(now, 'EEEE, MMMM d, yyyy') + ', ');
     appendElements('.max', weather.days[0].feelslikemax + '°F')
     appendElements('.min', weather.days[0].feelslikemin + '°F')
     appendElements('.feels-like', 'Feels like ' + weather.currentConditions.feelslike + '°F')
@@ -27,7 +36,7 @@ async function displayBasicDetails() {
     appendElements('.precipitation-chances-value', weather.currentConditions.precipprob + '%')
 }
 
-function displayHours() {
+function displayHours(weather) {
     const hourWeather = document.createElement('div')
     hourWeather.classList.add('hour-weather')
     const time = document.createElement('div')
@@ -41,11 +50,11 @@ function displayHours() {
     const windSpeed = document.createElement('div')
     windSpeed.classList.add('hour-wind-speed')
     const icon = document.createElement('img')
-    time.textContent = '12:00 AM'
-    temp.textContent = '72°F'
-    hourWeatherDescription.textContent = 'Partially Cloudy'
-    precipitationProb.textContent = '0%'
-    windSpeed.textContent = '0 mph'
+    time.textContent = `${(parseInt(weather.datetime.split(':')[0]) % 12 || 12)}:00 ${parseInt(weather.datetime.split(':')[0]) >= 12 ? 'PM' : 'AM'}`;
+    temp.textContent = weather.temp + '°F'
+    hourWeatherDescription.textContent = weather.conditions
+    precipitationProb.textContent = weather.precipprob + '%'
+    windSpeed.textContent = `${weather.windspeed} mph ${getWindDirection(weather.winddir)}`
     icon.src = 'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/icons/clear-day.png'
     hourWeather.appendChild(time)
     hourWeather.appendChild(temp)
@@ -57,7 +66,7 @@ function displayHours() {
     hourlyWeatherDiv.appendChild(hourWeather)
 }
 
-function displayDays() {
+function displayDays(weather) {
     const dayWeather = document.createElement('div')
     dayWeather.classList.add('day-weather')
     const dayTime = document.createElement('div')
@@ -79,14 +88,14 @@ function displayDays() {
     const dayWindSpeed = document.createElement('div')
     dayWindSpeed.classList.add('hour-wind-speed')
     const icon = document.createElement('img')
-    dayDate.textContent = '12 / 12 / 2023'
-    dayAvgTemp.textContent = '72°F'
-    dayHighTemp.textContent = '80°F'
-    dayLowTemp.textContent = '60°F'
-    dayTime.textContent = 'Wednesday'
-    dayWeatherDescription.textContent = 'Partially Cloudy'
-    dayPrecipitationProb.textContent = '0%'
-    dayWindSpeed.textContent = '0 mph'
+    dayDate.textContent = format(weather.datetime, 'EEEE, MMMM d, yyyy')
+    dayAvgTemp.textContent = weather.temp + '°F'
+    dayHighTemp.textContent = weather.tempmax + '°F'
+    dayLowTemp.textContent = weather.tempmin + '°F'
+    dayTime.textContent = format(parseISO(weather.datetime), 'EEEE')
+    dayWeatherDescription.textContent = weather.conditions
+    dayPrecipitationProb.textContent = weather.precipprob + '%'
+    dayWindSpeed.textContent = `${weather.windspeed} mph ${getWindDirection(weather.winddir)}`
     icon.src = 'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/icons/clear-day.png'
     dayTemp.appendChild(dayAvgTemp)
     dayTemp.appendChild(dayHighTemp)

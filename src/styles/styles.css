@@ -190,7 +190,7 @@ div.hour-weather {
     background-color: rgba(135, 206, 235, 0.25);
     color: white;
     align-items: center;
-    min-width: 6rem;
+    min-width: max-content;
     margin-bottom: 1rem;
 }
 
@@ -213,7 +213,7 @@ div.hour-weather {
 .day-weather {
     display: flex;
     flex-direction: column;
-    min-width: 10rem;
+    min-width: max-content;
     padding: 10px;
     align-items: center;
     background-color: rgba(135, 206, 235, 0.35);
@@ -235,6 +235,10 @@ div.hour-weather {
 .day-time {
     font-size: 1.25rem;
     font-weight: bold;
+}
+
+.date-and-time {
+    display: flex;
 }
 
 /* Entire scrollbar container */
