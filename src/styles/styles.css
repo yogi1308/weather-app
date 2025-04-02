@@ -54,7 +54,7 @@ h1, h2, h3, h4, h5, h6 {
 
 #content {
     font-family: 'Roboto', sans-serif;
-    background: linear-gradient(to right, #8eccdb, #5eb3d8);
+    background: linear-gradient(to bottom, #8eccdb, #5eb3d8);
 }
 
 .header {
@@ -160,4 +160,59 @@ input#city {
 
 .wind, .uv-index, .sunset {
     text-align: right;
+}
+
+.by-hours {
+    border-radius: 20px;
+    margin: 10px;
+    display: flex;
+    gap: 10px;
+    overflow: auto;
+}
+
+div.hour-weather {
+    border-radius: 20px;
+    padding: 20px 5px;
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(135, 206, 235, 0.25);
+    color: white;
+    align-items: center;
+    min-width: 6rem;
+    margin-bottom: 1rem;
+}
+
+.hour-weather-desc, .hour-weather, .hour-time, .hour-temp, .hour-precip-prob, .hour-wind-speed {
+    text-align: center
+}
+
+.main {
+    padding: 10px
+}
+
+
+/* Entire scrollbar container */
+::-webkit-scrollbar {
+    width: 5px; /* Adjust width for vertical scrollbars */
+    height: 5px; /* Adjust height for horizontal scrollbars */
+}
+
+::-webkit-scrollbar:vertical {
+    width: 0px;
+}
+
+/* Scrollbar track (background) */
+::-webkit-scrollbar-track {
+    background: transparent; /* Dark background */
+}
+
+/* Scrollbar thumb (draggable part) */
+::-webkit-scrollbar-thumb {
+    background: rgb(78, 203, 252); /* Dark gray thumb */
+    border-radius: 10px; /* Rounded thumb */
+}
+
+/* Hover effect on the scrollbar thumb */
+::-webkit-scrollbar-thumb:hover {
+    background: rgb(1, 183, 255); /* Slightly lighter gray on hover */
 }
