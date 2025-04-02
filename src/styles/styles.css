@@ -194,12 +194,13 @@ div.hour-weather {
     margin-bottom: 1rem;
 }
 
-.hour-weather-desc, .hour-weather, .hour-time, .hour-temp, .hour-precip-prob, .hour-wind-speed {
+.hour-weather-desc, .hour-weather, .hour-time, .hour-temp, .hour-precip-prob, .hour-wind-speed, .day-weather-desc, .day-weather, .day-time, .day-temp, .day-precip-prob, .day-wind-speed, .day-avg-temp {
     text-align: center
 }
 
 .main {
-    padding: 10px
+    padding: 10px;
+    color: white;
 }
 
 .next-hours, .next-days {
@@ -207,6 +208,33 @@ div.hour-weather {
     font-size: 1.75rem;
     font-weight: bold;
     margin: 10px;
+}
+
+.day-weather {
+    display: flex;
+    flex-direction: column;
+    min-width: 10rem;
+    padding: 10px;
+    align-items: center;
+    background-color: rgba(135, 206, 235, 0.35);
+    margin-bottom: 1rem;
+    border-radius: 20px;
+}
+
+.day-temp {
+    display: grid;
+    grid-template-columns: repeat(2, max-content);
+    grid-template-rows: auto;
+    column-gap: 1rem;
+}
+
+.day-avg-temp {
+    grid-column: span 2;
+}
+
+.day-time {
+    font-size: 1.25rem;
+    font-weight: bold;
 }
 
 /* Entire scrollbar container */

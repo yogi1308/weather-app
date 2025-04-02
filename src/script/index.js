@@ -75,33 +75,48 @@ function displayHours() {
 }
 
 function displayDays() {
-    const hourWeather = document.createElement('div')
-    hourWeather.classList.add('hour-weather')
-    const time = document.createElement('div')
-    time.classList.add('hour-time')
-    const temp = document.createElement('div')
-    temp.classList.add('hour-temp')
-    const hourWeatherDescription = document.createElement('div')
-    hourWeatherDescription.classList.add('hour-weather-desc')
-    const precipitationProb = document.createElement('div')
-    precipitationProb.classList.add('hour-precip-prob')
-    const windSpeed = document.createElement('div')
-    windSpeed.classList.add('hour-wind-speed')
+    const dayWeather = document.createElement('div')
+    dayWeather.classList.add('day-weather')
+    const dayTime = document.createElement('div')
+    dayTime.classList.add('day-time')
+    const dayDate = document.createElement('div')
+    dayDate.classList.add('day-date')
+    const dayTemp = document.createElement('div')
+    dayTemp.classList.add('day-temp')
+    const dayAvgTemp = document.createElement('div')
+    dayAvgTemp.classList.add('day-avg-temp')
+    const dayHighTemp = document.createElement('div')
+    dayHighTemp.classList.add('day-high-temp')
+    const dayLowTemp = document.createElement('div')
+    dayLowTemp.classList.add('day-low-temp')
+    const dayWeatherDescription = document.createElement('div')
+    dayWeatherDescription.classList.add('day-weather-desc')
+    const dayPrecipitationProb = document.createElement('div')
+    dayPrecipitationProb.classList.add('hour-precip-prob')
+    const dayWindSpeed = document.createElement('div')
+    dayWindSpeed.classList.add('hour-wind-speed')
     const icon = document.createElement('img')
-    time.textContent = '12:00 AM'
-    temp.textContent = '72°F'
-    hourWeatherDescription.textContent = 'Partially Cloudy'
-    precipitationProb.textContent = '0%'
-    windSpeed.textContent = '0 mph'
+    dayDate.textContent = '12 / 12 / 2023'
+    dayAvgTemp.textContent = '72°F'
+    dayHighTemp.textContent = '80°F'
+    dayLowTemp.textContent = '60°F'
+    dayTime.textContent = 'Wednesday'
+    dayWeatherDescription.textContent = 'Partially Cloudy'
+    dayPrecipitationProb.textContent = '0%'
+    dayWindSpeed.textContent = '0 mph'
     icon.src = 'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/icons/clear-day.png'
-    hourWeather.appendChild(time)
-    hourWeather.appendChild(temp)
-    hourWeather.appendChild(icon)
-    hourWeather.appendChild(hourWeatherDescription)
-    hourWeather.appendChild(precipitationProb)
-    hourWeather.appendChild(windSpeed)
+    dayTemp.appendChild(dayAvgTemp)
+    dayTemp.appendChild(dayHighTemp)
+    dayTemp.appendChild(dayLowTemp)
+    dayWeather.appendChild(dayTime)
+    dayWeather.appendChild(dayDate)
+    dayWeather.appendChild(dayTemp)
+    dayWeather.appendChild(icon)
+    dayWeather.appendChild(dayWeatherDescription)
+    dayWeather.appendChild(dayPrecipitationProb)
+    dayWeather.appendChild(dayWindSpeed)
     const hourlyWeatherDiv = document.querySelector('.by-days')
-    hourlyWeatherDiv.appendChild(hourWeather)
+    hourlyWeatherDiv.appendChild(dayWeather)
 }
 
 async function displayWeatherByHours() {
