@@ -21,7 +21,11 @@ import thunderRainIcon from "../assets/icons/animated/thunderstorms.svg"
 import windIcon from "../assets/icons/animated/wind.svg"
 import rainSnowIcon from "../assets/icons/animated/rain-and-snow-mix.svg"
 
-export {iconsManager}
+import cloudCover from '../assets/weather-images/Cloud_Cover.png'
+
+import {styleSetter} from './helperFunctions.js'
+
+export {iconsManager, mainCardImageAndOtherStylesManager}
 
 const iconsManager = {
     'clear-day' : clearDayIcon, 
@@ -48,4 +52,13 @@ const iconsManager = {
     'thunder' : thunderIcon,
     'thunder-rain' : thunderRainIcon,
     'wind' : windIcon
+}
+
+function mainCardImageAndOtherStylesManager(condition) {
+    switch (condition) {
+        case 'Partially cloudy' :
+            styleSetter(cloudCover, 'linear-gradient(to bottom, black, gray)', 'rgba(237, 9, 9, 0.25)', 'rgba(250, 6, 6, 0.25)', 'rgb(237, 9, 9)', 'rgb(250, 6, 6)');
+            break;
+
+    }
 }

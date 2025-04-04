@@ -1,5 +1,5 @@
 import {format} from 'date-fns'
-export {getWindDirection, appendElements, createAddClassAddTextAppend, getDateTime}
+export {getWindDirection, appendElements, createAddClassAddTextAppend, getDateTime, styleSetter}
 
 function getWindDirection(degrees) {
     const directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
@@ -21,4 +21,31 @@ function createAddClassAddTextAppend(element, className, text, appendTo) {
 
 function getDateTime() {
     return new Date();
+}
+
+function styleSetter(mainCardBg, contentBg, hourWeatherBg, dayWeatherBg, scrollbarThumbBg, scrollbarThumbHoverBg) {
+    document.querySelector('.basic-weather-details').style.backgroundImage = `url(${mainCardBg})`;
+    document.getElementById('content').style.background = contentBg;
+    document.querySelectorAll('div.hour-weather').forEach(hour => {hour.style.backgroundColor = hourWeatherBg;});
+    document.querySelectorAll('div.day-weather').forEach(day => {day.style.backgroundColor = dayWeatherBg;});
+    
+    const style = document.createElement('style');
+    document.head.appendChild(style);
+
+    style.innerHTML = `
+        ::-webkit-scrollbar {
+            width: 5px; 
+            height: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: ${scrollbarThumbBg}; 
+            border-radius: 20px; 
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: ${scrollbarThumbHoverBg}; 
+        }
+    `;
 }

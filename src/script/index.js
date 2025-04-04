@@ -2,13 +2,18 @@
 import {format, getHours} from 'date-fns'
 import '../styles/styles.css';
 import {getWeather} from './api.js'
+import {mainCardImageAndOtherStylesManager} from './assets-manager.js'
 import {displayHours, displayDays, displayBasicDetails, updateTimeDisplay} from './populateDOM.js'
 console.log('Hello World');
 
-(() => {
-    displayBasicDetails();
-    displayWeatherByHours();
-    displayWeatherByDays();
+(async () => {
+    await displayBasicDetails();
+    await displayWeatherByHours();
+    await displayWeatherByDays();
+    
+    // Once all functions are done, call mainCardImageAndOtherStylesManager
+    const weather = await getWeather();
+    mainCardImageAndOtherStylesManager(weather.currentConditions.conditions);
 })();
 
 async function displayWeatherByHours() {

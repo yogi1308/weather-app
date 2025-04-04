@@ -6,7 +6,7 @@ import precipitationProbIcon from '../assets/icons/precipitation-probability-ico
 import weatherAlertIcon from '../assets/icons/weather-alert.svg';
 import {getWindDirection, appendElements, createAddClassAddTextAppend, getDateTime} from './helperFunctions.js'
 import {getWeather} from './api.js'
-import {iconsManager} from './assets-manager.js'
+import {iconsManager, mainCardImageAndOtherStylesManager} from './assets-manager.js'
 
 export {displayHours, displayDays, displayBasicDetails, updateTimeDisplay}
 
