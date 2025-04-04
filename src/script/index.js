@@ -1,3 +1,4 @@
+//weather alerts 
 import {format, getHours} from 'date-fns'
 import '../styles/styles.css';
 import {getWeather} from './api.js'
@@ -8,7 +9,6 @@ console.log('Hello World');
     displayBasicDetails();
     displayWeatherByHours();
     displayWeatherByDays();
-    setInterval(updateTimeDisplay, 1000);
 })();
 
 async function displayWeatherByHours() {
