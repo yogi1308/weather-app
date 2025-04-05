@@ -23,9 +23,10 @@ function getDateTime() {
     return new Date();
 }
 
-function styleSetter(mainCardBg, contentBg, hourWeatherBg, dayWeatherBg, scrollbarThumbBg, scrollbarThumbHoverBg) {
+function styleSetter(mainCardBg, hourWeatherBg, dayWeatherBg, scrollbarThumbBg, scrollbarThumbHoverBg) {
     document.querySelector('.basic-weather-details').style.backgroundImage = `url(${mainCardBg})`;
-    document.getElementById('content').style.background = contentBg;
+    document.querySelector('body').style.background = `url(${mainCardBg})`;
+    document.querySelector('body').style.backgroundSize = 'cover';
     document.querySelectorAll('div.hour-weather').forEach(hour => {hour.style.backgroundColor = hourWeatherBg;});
     document.querySelectorAll('div.day-weather').forEach(day => {day.style.backgroundColor = dayWeatherBg;});
     

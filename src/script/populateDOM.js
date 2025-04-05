@@ -10,13 +10,12 @@ import {iconsManager, mainCardImageAndOtherStylesManager} from './assets-manager
 
 export {displayHours, displayDays, displayBasicDetails, updateTimeDisplay}
 
-async function updateTimeDisplay(timezone) {
+function updateTimeDisplay(timezone) {
     const formattedTime = formatInTimeZone(new Date(), timezone, 'hh:mm:ss a');
     document.querySelector('.time').innerHTML = '&nbsp;' + formattedTime;
 }
 
-async function displayBasicDetails() {
-    let weather = await getWeather()
+function displayBasicDetails(weather) {
     let timezone = weather.timezone
     console.log(weather);
     appendElements('.weather-condition', weather.currentConditions.conditions)
@@ -94,8 +93,8 @@ function displayDays(weather) {
     dayTemp.classList.add('day-temp');
 
     createAddClassAddTextAppend('div', 'day-avg-temp', `<span><img src="${thermometerIcon}" alt=""></span>${weather.temp}°F`, dayTemp);
-    createAddClassAddTextAppend('div', 'day-high-temp', `<span></span><div class="hi">hi</div></span>${weather.tempmax}°F`, dayTemp);
-    createAddClassAddTextAppend('div', 'day-low-temp', `<span></span><div class="lo">lo</div></span>${weather.tempmin}°F`, dayTemp);
+    createAddClassAddTextAppend('div', 'day-high-temp', `<span></span><div class="hi">Hi</div></span>${weather.tempmax}°F`, dayTemp);
+    createAddClassAddTextAppend('div', 'day-low-temp', `<span></span><div class="lo">Lo</div></span>${weather.tempmin}°F`, dayTemp);
 
     dayWeather.appendChild(dayTemp);
 

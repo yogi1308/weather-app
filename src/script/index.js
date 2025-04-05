@@ -7,18 +7,15 @@ import {displayHours, displayDays, displayBasicDetails, updateTimeDisplay} from 
 console.log('Hello World');
 
 (async () => {
-    await displayBasicDetails();
-    await displayWeatherByHours();
-    await displayWeatherByDays();
-    
-    // Once all functions are done, call mainCardImageAndOtherStylesManager
-    const weather = await getWeather();
+    let weather = await getWeather()
+    displayBasicDetails(weather);
+    displayWeatherByHours(weather);
+    displayWeatherByDays(weather);
     mainCardImageAndOtherStylesManager(weather.currentConditions.conditions);
 })();
 
-async function displayWeatherByHours() {
+function displayWeatherByHours(weather) {
     const now = new Date();
-    let weather = await getWeather()
     const currentHour = now.getHours();
 
     for (let i = 1; i <= 24; i++) { 
@@ -32,8 +29,7 @@ async function displayWeatherByHours() {
     }
 }
 
-async function displayWeatherByDays() {
-    let weather = await getWeather()
+function displayWeatherByDays(weather) {
     for (let i = 1; i < 15; i++) { 
         displayDays(weather.days[i])
     }

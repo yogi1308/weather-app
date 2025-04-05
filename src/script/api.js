@@ -8,7 +8,7 @@ const key = 'W2FDGJ2MLL2LU727Y6D8PWFW5' // W2FDGJ2MLL2LU727Y6D8PWFW5, 96QA75TCRT
 const baseURL = 'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/'
 
 async function getWeather() {
-    let city = document.querySelector('#city').value || 'Tokyo'
+    let city = document.querySelector('#city').value || 'Tempe'
     let url = baseURL + city + '?key=' + key
     let weather = await fetch(url, {mode: 'cors'})
     weather = await weather.json()

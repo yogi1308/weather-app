@@ -52,9 +52,22 @@ h1, h2, h3, h4, h5, h6 {
     isolation: isolate;
 }
 
+body {
+    backdrop-filter: blur(5px);
+}
+
 #content {
     font-family: 'Roboto', sans-serif;
-    /* background: linear-gradient(to bottom, #8eccdb, #5eb3d8); */
+        /* background: linear-gradient(to bottom, #8eccdb, #5eb3d8); */
+    text-shadow:  
+        1px 1px 0.25px gray,  /* Bottom-right */
+        -1px -1px 0.25px gray, /* Top-left */
+        -1px 1px 0.25px gray,  /* Bottom-left */
+        1px -1px 0.25px gray;  /* Top-right */
+}
+
+div.hi, div.lo {
+    text-shadow: none;
 }
 
 .header {
@@ -111,11 +124,12 @@ input#city {
     padding-left: 20px;
     width: 90%;
     box-sizing: border-box;
-    position: absolute;
-    top: 25%;
+    position: fixed;
+    top: 10%;
     left: 5%;
     font-size: 1.2rem;
     color: white;
+    z-index: 100;
     text-shadow:  
         1px 1px 0.25px gray,  /* Bottom-right */
         -1px -1px 0.25px gray, /* Top-left */
@@ -297,7 +311,7 @@ div.hour-weather {
 .day-precip-prob {
     display: flex;
     justify-self: right;
-    padding-right: 2.5rem;
+    padding-right: 2rem;
 }
 
 .day-wind-speed > span > img {
