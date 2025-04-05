@@ -76,6 +76,7 @@ div.hi, div.lo {
     align-items: center;
     gap: 10px;
     padding: 10px;
+    padding: 0.5rem 1.5rem 0rem 1rem;
 }
 
 .search-container {
@@ -329,6 +330,18 @@ img {
 
 .alert > span > img {
     width: 1rem;
+}
+
+.error-message {
+    position: fixed;
+    top: 35%;
+    left: 4rem;
+    font-family: 'Roboto', sans-serif;;
+    max-width: 75%;
+}
+
+body > div.error-message > h3 {
+    font-size: 2.5rem;
 }
 
 ::-webkit-scrollbar:vertical {

@@ -43,6 +43,8 @@ import hail from '../assets/weather-images/hail_showers.png'
 import diamondDust from '../assets/weather-images/diamond_dust.png'
 import partiallyClouded from '../assets/weather-images/partially_clouded.png'
 import dustStorm from '../assets/weather-images/dust_storm.png'
+import partiallyCloudedNight from '../assets/weather-images/partially_clouded_night.png'    
+import clearNight from '../assets/weather-images/clear_night.png'
 
 import {styleSetter} from './helperFunctions.js'
 
