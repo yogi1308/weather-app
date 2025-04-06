@@ -5,7 +5,7 @@ import {mainCardImageAndOtherStylesManager} from './assets-manager.js'
 import {displayWeatherByHours, displayWeatherByDays} from './index.js'
 import clearNight from '../assets/weather-images/clear_night.png'
 
-export {getWindDirection, appendElements, createAddClassAddTextAppend, getDateTime, styleSetter, manageError, displayCitySuggestions, clearCitySuggestions, handleKeyPress, addListeners}
+export {getWindDirection, appendElements, createAddClassAddTextAppend, getDateTime, styleSetter, manageError, displayCitySuggestions, clearCitySuggestions, handleKeyPress, addListeners, showLoader, hideLoader}
 
 function getWindDirection(degrees) {
     const directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
@@ -82,16 +82,19 @@ function displayCitySuggestions(suggestions) {
                 console.log(latitude, longitude, location)
                 clearCitySuggestions()
                 try {
+                    showLoader()
                     let weather = await getWeatherUsingCoords(latitude, longitude, location)
                     displayBasicDetails(weather);
                     displayWeatherByHours(weather);
                     displayWeatherByDays(weather);
-                    mainCardImageAndOtherStylesManager(weather.currentConditions.conditions);
+                    mainCardImageAndOtherStylesManager(weather.currentConditions.conditions)
+                    hideLoader()
                     document.querySelector('#city').value = '';
                 }
                 catch (error) {
                     console.log(error)
                     manageError();
+                    hideLoader()
                 }
             });
             suggestionsList.appendChild(suggestionItem);
@@ -127,6 +130,7 @@ function clearCitySuggestions() {
 
 async function handleKeyPress() {
     try {
+            showLoader()
             let weather = await getWeather(document.querySelector('#city').value.trim())
             let location = await getCitybyCoords(weather.latitude, weather.longitude)
             location = `${location[0].city}, ${location[0].country}`
@@ -134,7 +138,8 @@ async function handleKeyPress() {
             displayBasicDetails(weather);
             displayWeatherByHours(weather);
             displayWeatherByDays(weather);
-            mainCardImageAndOtherStylesManager(weather.currentConditions.conditions);
+            mainCardImageAndOtherStylesManager(weather.currentConditions.conditions)
+            hideLoader()
             clearCitySuggestions()
             document.querySelector('#city').value = '';
         }
@@ -142,7 +147,8 @@ async function handleKeyPress() {
             console.log(error)
             manageError()
             clearCitySuggestions()
-        }  
+            hideLoader()
+        }
 
 }
 
@@ -238,3 +244,28 @@ function manageError() {
         }
     }
 }   
+
+function showLoader() {
+    const loader = document.getElementById('loader');
+    const content = document.getElementById('content');
+    loader.style.display = 'flex';
+    content.style.display = 'none';
+    document.body.style.display = 'flex';
+    document.body.style.justifyContent = 'center';
+    document.body.style.alignItems = 'center';
+    document.body.style.height = '100vh';
+    document.body.style.width = '100vw';
+    document.body.style.background = 'black';
+}
+
+
+
+function hideLoader() {
+    document.getElementById('loader').style.display = 'none';
+    document.getElementById('content').style.display = 'block';
+    const body = document.querySelector('body');
+    body.style.display = 'block';
+    body.style.height = 'auto';
+    body.style.width = 'auto';
+}
+

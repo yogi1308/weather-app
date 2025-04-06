@@ -1,0 +1,39 @@
+<svg viewBox="-15 -15 30 30" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style type="text/css"><![CDATA[
+      @keyframes am-weather-sun {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+
+      .am-weather-sun {
+        animation: am-weather-sun 9s linear infinite;
+      }
+    ]]></style>
+  </defs>
+  <g class="am-weather-sun">
+    <line y1="9" y2="12" stroke="#ffa500" stroke-linecap="round" stroke-width="2"/>
+    <g transform="rotate(45)">
+      <line y1="9" y2="12" stroke="#ffa500" stroke-linecap="round" stroke-width="2"/>
+    </g>
+    <g transform="rotate(90)">
+      <line y1="9" y2="12" stroke="#ffa500" stroke-linecap="round" stroke-width="2"/>
+    </g>
+    <g transform="rotate(135)">
+      <line y1="9" y2="12" stroke="#ffa500" stroke-linecap="round" stroke-width="2"/>
+    </g>
+    <g transform="rotate(180)">
+      <line y1="9" y2="12" stroke="#ffa500" stroke-linecap="round" stroke-width="2"/>
+    </g>
+    <g transform="rotate(225)">
+      <line y1="9" y2="12" stroke="#ffa500" stroke-linecap="round" stroke-width="2"/>
+    </g>
+    <g transform="rotate(270)">
+      <line y1="9" y2="12" stroke="#ffa500" stroke-linecap="round" stroke-width="2"/>
+    </g>
+    <g transform="rotate(315)">
+      <line y1="9" y2="12" stroke="#ffa500" stroke-linecap="round" stroke-width="2"/>
+    </g>
+    <circle r="5" fill="#ffa500" stroke="#ffa500" stroke-width="2"/>
+  </g>
+</svg>

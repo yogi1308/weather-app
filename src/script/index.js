@@ -4,12 +4,13 @@ import '../styles/styles.css';
 import {getCitybyCoords, getWeather, getWeatherUsingCoords} from './api.js'
 import {mainCardImageAndOtherStylesManager} from './assets-manager.js'
 import {displayHours, displayDays, displayBasicDetails} from './populateDOM.js'
-import {manageError, addListeners} from './helperFunctions.js'
+import {manageError, addListeners, hideLoader, showLoader} from './helperFunctions.js'
 
 export {displayWeatherByHours, displayWeatherByDays}
 console.log('Hello World');
 
 (async () => {
+    showLoader()
     try {
         console.log('Hello World');
 
@@ -32,8 +33,9 @@ console.log('Hello World');
         displayBasicDetails(weather);
         displayWeatherByHours(weather);
         displayWeatherByDays(weather);
-        mainCardImageAndOtherStylesManager(weather.currentConditions.conditions);
         addListeners();
+        mainCardImageAndOtherStylesManager(weather.currentConditions.conditions)
+        hideLoader()
     } catch (error) {
         console.warn('Geolocation failed or permission denied:', error);
 
@@ -47,6 +49,7 @@ console.log('Hello World');
         displayWeatherByDays(weather);
         mainCardImageAndOtherStylesManager(weather.currentConditions.conditions);
         addListeners();
+        hideLoader();
     }
 })();
 

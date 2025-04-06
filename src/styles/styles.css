@@ -52,11 +52,24 @@ h1, h2, h3, h4, h5, h6 {
     isolation: isolate;
 }
 
+/* Loader styles */
+.loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+embed > svg {
+    width: 5rem;
+    height: 5rem;
+}
+
 body {
     backdrop-filter: blur(5px);
 }
 
 #content {
+    display: none;
     font-family: 'Roboto', sans-serif;
         /* background: linear-gradient(to bottom, #8eccdb, #5eb3d8); */
     text-shadow:  
