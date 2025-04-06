@@ -97,6 +97,10 @@ ul {
     z-index: 10000;
 }
 
+li {
+    cursor: pointer;
+}
+
 .search-container {
     display: flex;
     border: 1.75px solid #ccc;

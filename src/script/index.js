@@ -1,37 +1,34 @@
 //weather alerts 
 import {format, getHours} from 'date-fns'
 import '../styles/styles.css';
-import {getWeather, getCitiesSuggestion} from './api.js'
+import {getWeather} from './api.js'
 import {mainCardImageAndOtherStylesManager} from './assets-manager.js'
-import {displayHours, displayDays, displayBasicDetails, updateTimeDisplay} from './populateDOM.js'
-import {manageError, displayCitySuggestions} from './helperFunctions.js'
+import {displayHours, displayDays, displayBasicDetails} from './populateDOM.js'
+import {manageError, addListeners} from './helperFunctions.js'
+
+export {displayWeatherByHours, displayWeatherByDays}
 console.log('Hello World');
 
 (async () => {
-  // Wrapper function to handle input and call getCitiesSuggestion
-  window.getCitiesSuggestion = async function (query) {
-    if (query.length > 2) { // Fetch suggestions only if input length > 2
-        const suggestions = await getCitiesSuggestion(query);
-        displayCitySuggestions(suggestions);
-    } else {
-        // clearCitySuggestions();
-    }
-  };
     try {
-        let weather = await getWeather()
+        console.log('Hello World');
+        let weather = await getWeather('Tempe')
         displayBasicDetails(weather);
         displayWeatherByHours(weather);
         displayWeatherByDays(weather);
         mainCardImageAndOtherStylesManager(weather.currentConditions.conditions);
+        addListeners();
     }
     catch (error) {
-      manageError();
+        console.log(error)
+        manageError() 
     }    
 })();
 
 function displayWeatherByHours(weather) {
     const now = new Date();
     const currentHour = now.getHours();
+    document.querySelector('.by-hours').innerHTML = '';
 
     for (let i = 1; i <= 24; i++) { 
         // Calculate the overall hour index starting from current hour.
@@ -45,6 +42,7 @@ function displayWeatherByHours(weather) {
 }
 
 function displayWeatherByDays(weather) {
+  document.querySelector('.by-days').innerHTML = '';
     for (let i = 1; i < 15; i++) { 
         displayDays(weather.days[i])
     }

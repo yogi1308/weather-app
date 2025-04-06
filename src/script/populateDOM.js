@@ -5,24 +5,32 @@ import windIcon from '../assets/icons/wind-icon.svg';
 import precipitationProbIcon from '../assets/icons/precipitation-probability-icon.svg';
 import weatherAlertIcon from '../assets/icons/weather-alert.svg';
 import {getWindDirection, appendElements, createAddClassAddTextAppend, getDateTime} from './helperFunctions.js'
-import {getWeather} from './api.js'
-import {iconsManager, mainCardImageAndOtherStylesManager} from './assets-manager.js'
+import {iconsManager} from './assets-manager.js'
 
-export {displayHours, displayDays, displayBasicDetails, updateTimeDisplay}
+export {displayHours, displayDays, displayBasicDetails, updateTimeDisplay, timeIntervalId}
+
+let timeIntervalId;
 
 function updateTimeDisplay(timezone) {
-    const formattedTime = formatInTimeZone(new Date(), timezone, 'hh:mm:ss a');
+    const formattedTime = formatInTimeZone(new Date(), timezone, 'EEEE, MMMM d, yyyy, hh:mm:ss a');
     document.querySelector('.time').innerHTML = '&nbsp;' + formattedTime;
 }
 
 function displayBasicDetails(weather) {
+    document.querySelector('.basic-info').style.display = 'block'
+    document.querySelector('.hours-days').style.display = 'block'
+    if (document.querySelector('div.error-message')) {document.querySelector('div.error-message').style.display = 'none';}
+    if (document.querySelectorAll('.twinkle-star')) {
+        document.querySelectorAll('.twinkle-star').forEach(star => {
+            star.style.display = 'none';
+        });
+    }
     let timezone = weather.timezone
     console.log(weather);
     appendElements('.weather-condition', weather.currentConditions.conditions)
     appendElements('.weather-desc', weather.description)
     appendElements('.location', weather.resolvedAddress)
     appendElements('.temp', weather.currentConditions.temp + '°F')
-    appendElements('.date', format(getDateTime(), 'EEEE, MMMM d, yyyy') + ', ');
     appendElements('.max', weather.days[0].feelslikemax + '°F')
     appendElements('.min', weather.days[0].feelslikemin + '°F')
     appendElements('.feels-like', 'Feels like ' + weather.currentConditions.feelslike + '°F')
@@ -39,7 +47,14 @@ function displayBasicDetails(weather) {
     appendElements('.precipitation-chances', 'Precipitation')
     appendElements('.precipitation-chances-value', weather.currentConditions.precipprob + '%')
     if (weather.alerts[0]) {appendElements('.alert', `<span><img src="${weatherAlertIcon}" alt="Alert: "></span>` + weather.alerts[0].event)}
-    setInterval(() => updateTimeDisplay(timezone), 1000);
+    
+    // Clear the existing interval if it exists
+    if (timeIntervalId) {
+        clearInterval(timeIntervalId);
+    }
+
+    // Start a new interval to update the time
+    timeIntervalId = setInterval(() => updateTimeDisplay(timezone), 1000);
 }
 
 function displayHours(weather) {

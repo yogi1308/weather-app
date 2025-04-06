@@ -143,7 +143,7 @@ function mainCardImageAndOtherStylesManager(condition) {
         //similar temperatures continuing, Sky cover, %s., %s with %s., %s and %s with %s, Solar Energy, Solar Radiation, Mean Station Distance,
         // Contributing Stations, Sunshine, Temperature, %s with %s., %s., today, tomorrow, Sky Unchanged, Visibility, warming up, Wind direction,
         // Wind Direction, Weather Type, Wind Gust, Wind Chill, Wind Speed
-            styleSetter(defaultBg, 'rgb(250, 246, 246)', 'rgb(255, 255, 255)', 'rgb(253, 252, 252)', 'hsla(0, 0.00%, 100.00%, 0.80)');
+            styleSetter(defaultBg, 'rgba(250, 246, 246, 0.15)', 'rgba(255, 255, 255, 0.15)', 'rgba(253, 252, 252, 0.4)', 'hsla(0, 0.00%, 100.00%, 0.80)');
             break;
     }
 }
