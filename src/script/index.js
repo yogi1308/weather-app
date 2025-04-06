@@ -1,7 +1,7 @@
 //weather alerts 
 import {format, getHours} from 'date-fns'
 import '../styles/styles.css';
-import {getWeather} from './api.js'
+import {getCitybyCoords, getWeather, getWeatherUsingCoords} from './api.js'
 import {mainCardImageAndOtherStylesManager} from './assets-manager.js'
 import {displayHours, displayDays, displayBasicDetails} from './populateDOM.js'
 import {manageError, addListeners} from './helperFunctions.js'
@@ -12,18 +12,45 @@ console.log('Hello World');
 (async () => {
     try {
         console.log('Hello World');
-        let weather = await getWeather('Tempe')
+
+        // Attempt to get the user's current position
+        const position = await new Promise((resolve, reject) => {
+            navigator.geolocation.getCurrentPosition(resolve, reject);
+        });
+
+        console.log('Geolocation successful:', position);
+
+        // Extract latitude and longitude
+        const { latitude, longitude } = position.coords;
+
+        // Fetch weather using the obtained coordinates
+        const location = await getCitybyCoords(latitude, longitude);
+        const locationName = `${location[0].city}, ${location[0].country}`;
+        const weather = await getWeatherUsingCoords(latitude, longitude, locationName);
+
+        // Display weather details
+        displayBasicDetails(weather);
+        displayWeatherByHours(weather);
+        displayWeatherByDays(weather);
+        mainCardImageAndOtherStylesManager(weather.currentConditions.conditions);
+        addListeners();
+    } catch (error) {
+        console.warn('Geolocation failed or permission denied:', error);
+
+        // Fetch weather for Paris
+        const weather = await getWeather('Paris');
+        weather.resolvedAddress = 'Paris, France';
+
+        // Display weather details for Paris
         displayBasicDetails(weather);
         displayWeatherByHours(weather);
         displayWeatherByDays(weather);
         mainCardImageAndOtherStylesManager(weather.currentConditions.conditions);
         addListeners();
     }
-    catch (error) {
-        console.log(error)
-        manageError() 
-    }    
 })();
+
+
 
 function displayWeatherByHours(weather) {
     const now = new Date();
