@@ -3,7 +3,6 @@ import { formatInTimeZone } from 'date-fns-tz';
 import thermometerIcon from '../assets/icons/thermometer-icon.svg';
 import windIcon from '../assets/icons/wind-icon.svg';
 import precipitationProbIcon from '../assets/icons/precipitation-probability-icon.svg';
-import weatherAlertIcon from '../assets/icons/weather-alert.svg';
 import {getWindDirection, appendElements, createAddClassAddTextAppend, getDateTime} from './helperFunctions.js'
 import {iconsManager} from './assets-manager.js'
 
@@ -46,7 +45,11 @@ function displayBasicDetails(weather) {
     appendElements('.uv-index-value', weather.currentConditions.uvindex)
     appendElements('.precipitation-chances', 'Precipitation')
     appendElements('.precipitation-chances-value', weather.currentConditions.precipprob + '%')
-    if (weather.alerts[0]) {appendElements('.alert', `<span><img src="${weatherAlertIcon}" alt="Alert: "></span>` + weather.alerts[0].event)}
+    if (weather.alerts[0] && weather.alerts[0].description != 'There are currently no active warnings or risks.') {
+        document.querySelector('.alert').style.display = 'flex'
+        appendElements('.alert', ' ' + weather.alerts[0].event)
+    }
+    else {document.querySelector('.alert').style.display = 'none'}
     
     // Clear the existing interval if it exists
     if (timeIntervalId) {

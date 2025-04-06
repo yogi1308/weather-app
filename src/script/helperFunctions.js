@@ -87,6 +87,7 @@ function displayCitySuggestions(suggestions) {
                     displayWeatherByHours(weather);
                     displayWeatherByDays(weather);
                     mainCardImageAndOtherStylesManager(weather.currentConditions.conditions);
+                    document.querySelector('#city').value = '';
                 }
                 catch (error) {
                     console.log(error)
@@ -135,6 +136,7 @@ async function handleKeyPress() {
             displayWeatherByDays(weather);
             mainCardImageAndOtherStylesManager(weather.currentConditions.conditions);
             clearCitySuggestions()
+            document.querySelector('#city').value = '';
         }
         catch (error) {
             console.log(error)
@@ -147,20 +149,23 @@ async function handleKeyPress() {
 function addListeners() {
     document.querySelector('#city').addEventListener('input', async (event) => {
         const query = event.target.value.trim();
-    
+
         if (query.length > 2) { // Fetch suggestions only if input length > 2
             const suggestions = await getCitiesSuggestion(query);
             displayCitySuggestions(suggestions);
         } 
         else {
-          clearCitySuggestions();
+            clearCitySuggestions();
         }
-      })
-      document.querySelector('#city').addEventListener('keydown', (event) => {
+        })
+    document.querySelector('#city').addEventListener('keydown', (event) => {
         if (event.key === 'Enter') {
-          handleKeyPress();
+            handleKeyPress();
         }
-      })
+    })
+    document.querySelector('#content > div.header > div.search-container > button').addEventListener('click', () => {
+        handleKeyPress();
+    })
 }
 
 function manageError() {
