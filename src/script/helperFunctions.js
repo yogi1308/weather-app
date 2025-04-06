@@ -2,7 +2,7 @@ import {format} from 'date-fns'
 import {getWeatherUsingCoords, getWeather, getCitybyCoords, getCitiesSuggestion} from './api.js'
 import {displayBasicDetails, timeIntervalId} from './populateDOM.js'
 import {mainCardImageAndOtherStylesManager} from './assets-manager.js'
-import {displayWeatherByHours, displayWeatherByDays} from './index.js'
+import {displayWeatherByHours, displayWeatherByDays, getUnitGroup, setUnitGroup} from './index.js'
 import clearNight from '../assets/weather-images/clear_night.png'
 
 export {getWindDirection, appendElements, createAddClassAddTextAppend, getDateTime, styleSetter, manageError, displayCitySuggestions, clearCitySuggestions, handleKeyPress, addListeners, showLoader, hideLoader}
@@ -131,7 +131,9 @@ function clearCitySuggestions() {
 async function handleKeyPress() {
     try {
             showLoader()
+            console.log(document.querySelector('#city').value.trim())
             let weather = await getWeather(document.querySelector('#city').value.trim())
+            console.log(document.querySelector('#city').value.trim())
             let location = await getCitybyCoords(weather.latitude, weather.longitude)
             location = `${location[0].city}, ${location[0].country}`
             weather.resolvedAddress = location
@@ -154,16 +156,16 @@ async function handleKeyPress() {
 
 function addListeners() {
     document.querySelector('#city').addEventListener('input', async (event) => {
-        const query = event.target.value.trim();
+    const query = event.target.value.trim();
 
-        if (query.length > 2) { // Fetch suggestions only if input length > 2
-            const suggestions = await getCitiesSuggestion(query);
-            displayCitySuggestions(suggestions);
-        } 
-        else {
-            clearCitySuggestions();
-        }
-        })
+    if (query.length > 2) { // Fetch suggestions only if input length > 2
+        const suggestions = await getCitiesSuggestion(query);
+        displayCitySuggestions(suggestions);
+    } 
+    else {
+        clearCitySuggestions();
+    }
+    })
     document.querySelector('#city').addEventListener('keydown', (event) => {
         if (event.key === 'Enter') {
             handleKeyPress();
@@ -172,6 +174,8 @@ function addListeners() {
     document.querySelector('#content > div.header > div.search-container > button').addEventListener('click', () => {
         handleKeyPress();
     })
+
+    document.querySelector('.settings').addEventListener('click', changeUnits)
 }
 
 function manageError() {
@@ -269,3 +273,162 @@ function hideLoader() {
     body.style.width = 'auto';
 }
 
+async function changeUnits() {
+    console.log('Units changed');
+    document.querySelectorAll('div.day-wind-speed').forEach(temp => {
+        const spans = temp.querySelectorAll('span');
+        if (spans.length < 2) return; // Make sure there’s text to update
+    
+        const textSpan = spans[1]; // Get the <span> containing the wind value text
+        const originalText = textSpan.textContent;
+        const windValue = extractNumber(originalText);
+        const direction = extractWindDirection(originalText);
+    
+        let speedUnit, convertedSpeed;
+    
+        if (getUnitGroup() === 'metric') {
+            // Switching to imperial
+            speedUnit = 'mph';
+            convertedSpeed = kmphToMph(windValue);
+        } else {
+            // Switching to metric
+            speedUnit = 'kmph';
+            convertedSpeed = mphToKmph(windValue);
+        }
+    
+        textSpan.textContent = `${convertedSpeed} ${speedUnit} ${direction}`;
+    });
+    const currentUnitGroup = getUnitGroup();
+    if (currentUnitGroup === 'metric') {
+        let hourCounter = 1
+        let hourWindCounter = 1
+        setUnitGroup('imperial');
+        let tempUnit = '°F';
+        let speedUnit = 'mph';
+        appendElements('.temp', celsiusToFahrenheit(extractNumber(document.querySelector('.temp').textContent)) + tempUnit)
+        appendElements('.max', celsiusToFahrenheit(extractNumber(document.querySelector('.max').textContent)) + tempUnit)
+        appendElements('.min', celsiusToFahrenheit(extractNumber(document.querySelector('.min').textContent)) + tempUnit)
+        appendElements('.feels-like', 'Feels like ' + celsiusToFahrenheit(extractNumber(document.querySelector('.feels-like').textContent)) + tempUnit)
+        appendElements('.wind-value', `${kmphToMph(extractNumber(document.querySelector('.wind-value').textContent))} ${speedUnit} ${extractWindDirection(document.querySelector('.wind-value').textContent)}`)
+        document.querySelectorAll('div.hour-temp').forEach(temp => {
+            let selector = `#content > div.main > div.hours-days > div.by-hours > div:nth-child(${hourCounter}) > div.hour-temp`
+            appendElements(selector, celsiusToFahrenheit(extractNumber(temp.textContent)) + ' '  + tempUnit)
+            ++hourCounter
+        })
+        document.querySelectorAll('div.hour-wind-speed').forEach(temp => {
+            let selector = `#content > div.main > div.hours-days > div.by-hours > div:nth-child(${hourWindCounter}) > div.hour-wind-speed`
+            appendElements(selector, kmphToMph(extractNumber(temp.textContent)) + ' '  + speedUnit + ' ' + extractWindDirection(temp.textContent))
+            ++hourWindCounter
+        })
+        document.querySelectorAll('div.day-low-temp').forEach(tempDiv => {
+            const tempTextNode = Array.from(tempDiv.childNodes).find(
+                node => node.nodeType === Node.TEXT_NODE && node.nodeValue.trim() !== ''
+            );
+        
+            if (tempTextNode) {
+                tempTextNode.nodeValue = celsiusToFahrenheit(extractNumber(tempTextNode.nodeValue)) + ' ' + tempUnit;
+            }
+        });
+        document.querySelectorAll('div.day-high-temp').forEach(tempDiv => {
+            const tempTextNode = Array.from(tempDiv.childNodes).find(
+                node => node.nodeType === Node.TEXT_NODE && node.nodeValue.trim() !== ''
+            );
+        
+            if (tempTextNode) {
+                tempTextNode.nodeValue = celsiusToFahrenheit(extractNumber(tempTextNode.nodeValue)) + ' ' + tempUnit;
+            }
+        });
+        document.querySelectorAll('div.day-avg-temp').forEach(tempDiv => {
+            const tempTextNode = Array.from(tempDiv.childNodes).find(
+                node => node.nodeType === Node.TEXT_NODE && node.nodeValue.trim() !== ''
+            );
+        
+            if (tempTextNode) {
+                tempTextNode.nodeValue = celsiusToFahrenheit(extractNumber(tempTextNode.nodeValue)) + ' ' + tempUnit;
+            }
+        });
+    } else {
+        let hourCounter = 1
+        let hourWindCounter = 1
+        let loTempCounter = 1
+        setUnitGroup('metric');
+        let tempUnit = '°C';
+        let speedUnit = 'kmph';
+        appendElements('.temp', fahrenheitToCelsius(extractNumber(document.querySelector('.temp').textContent)) + ' '  + tempUnit)
+        appendElements('.max', fahrenheitToCelsius(extractNumber(document.querySelector('.max').textContent)) + ' '  + tempUnit)
+        appendElements('.min', fahrenheitToCelsius(extractNumber(document.querySelector('.min').textContent)) + ' '  + tempUnit)
+        appendElements('.feels-like', 'Feels like ' + fahrenheitToCelsius(extractNumber(document.querySelector('.feels-like').textContent)) + ' '  + tempUnit)
+        appendElements('.wind-value', `${mphToKmph(extractNumber(document.querySelector('.wind-value').textContent))} ${speedUnit} ${extractWindDirection(document.querySelector('.wind-value').textContent)}`)
+        document.querySelectorAll('div.hour-temp').forEach(temp => {
+            let selector = `#content > div.main > div.hours-days > div.by-hours > div:nth-child(${hourCounter}) > div.hour-temp`
+            appendElements(selector, fahrenheitToCelsius(extractNumber(temp.textContent)) + ' '  + tempUnit)
+            ++hourCounter
+        })
+        document.querySelectorAll('div.hour-wind-speed').forEach(temp => {
+            let selector = `#content > div.main > div.hours-days > div.by-hours > div:nth-child(${hourWindCounter}) > div.hour-wind-speed`
+            appendElements(selector, mphToKmph(extractNumber(temp.textContent)) + ' ' + speedUnit  + ' ' + extractWindDirection(temp.textContent))
+            ++hourWindCounter
+        })
+        document.querySelectorAll('div.day-low-temp').forEach(tempDiv => {
+            const tempTextNode = Array.from(tempDiv.childNodes).find(
+                node => node.nodeType === Node.TEXT_NODE && node.nodeValue.trim() !== ''
+            );
+        
+            if (tempTextNode) {
+                tempTextNode.nodeValue = fahrenheitToCelsius(extractNumber(tempTextNode.nodeValue)) + ' ' + tempUnit;
+            }
+        });
+        document.querySelectorAll('div.day-high-temp').forEach(tempDiv => {
+            const tempTextNode = Array.from(tempDiv.childNodes).find(
+                node => node.nodeType === Node.TEXT_NODE && node.nodeValue.trim() !== ''
+            );
+        
+            if (tempTextNode) {
+                tempTextNode.nodeValue = fahrenheitToCelsius(extractNumber(tempTextNode.nodeValue)) + ' ' + tempUnit;
+            }
+        });
+        document.querySelectorAll('div.day-avg-temp').forEach(tempDiv => {
+            const tempTextNode = Array.from(tempDiv.childNodes).find(
+                node => node.nodeType === Node.TEXT_NODE && node.nodeValue.trim() !== ''
+            );
+        
+            if (tempTextNode) {
+                tempTextNode.nodeValue = fahrenheitToCelsius(extractNumber(tempTextNode.nodeValue)) + ' ' + tempUnit;
+            }
+        });
+    }
+    console.log(`Unit group is now: ${getUnitGroup()}`);
+    
+}
+
+function mphToKmph(mph) {
+    return +(mph * 1.60934).toFixed(1);
+}
+  
+function kmphToMph(kmph) {
+    return +(kmph / 1.60934).toFixed(1);
+}
+
+function fahrenheitToCelsius(f) {
+    return +((f - 32) * 5 / 9).toFixed(1);
+}
+  
+function celsiusToFahrenheit(c) {
+    return +((c * 9 / 5) + 32).toFixed(1);
+}
+
+function extractNumber(input) {
+    const str = String(input); // ensures it's a string
+    const match = str.match(/-?\d+(\.\d+)?/);
+    return match ? parseFloat(match[0]) : null;
+}
+  
+function extractWindDirection(input) {
+    console.log(input)
+    const str = String(input);
+    const match = str.match(/[A-Z]{1,3}$/);
+    return match ? match[0] : '';
+}
+  
+// #content > div.main > div.hours-days > div.by-hours > div:nth-child(3) > div.hour-temp
+    

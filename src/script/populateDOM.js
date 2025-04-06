@@ -5,6 +5,7 @@ import windIcon from '../assets/icons/wind-icon.svg';
 import precipitationProbIcon from '../assets/icons/precipitation-probability-icon.svg';
 import {getWindDirection, appendElements, createAddClassAddTextAppend, getDateTime} from './helperFunctions.js'
 import {iconsManager} from './assets-manager.js'
+import { getUnitGroup } from './index.js';
 
 export {displayHours, displayDays, displayBasicDetails, updateTimeDisplay, timeIntervalId}
 
@@ -16,6 +17,9 @@ function updateTimeDisplay(timezone) {
 }
 
 function displayBasicDetails(weather) {
+    let tempUnit = '°F';
+    let speedUnit = 'mph';
+    if (getUnitGroup() == 'metric') {tempUnit = '°C'; speedUnit = ' kmph'}
     document.querySelector('.basic-info').style.display = 'block'
     document.querySelector('.hours-days').style.display = 'block'
     if (document.querySelector('div.error-message')) {document.querySelector('div.error-message').style.display = 'none';}
@@ -29,14 +33,14 @@ function displayBasicDetails(weather) {
     appendElements('.weather-condition', weather.currentConditions.conditions)
     appendElements('.weather-desc', weather.description)
     appendElements('.location', weather.resolvedAddress)
-    appendElements('.temp', weather.currentConditions.temp + '°F')
-    appendElements('.max', weather.days[0].feelslikemax + '°F')
-    appendElements('.min', weather.days[0].feelslikemin + '°F')
-    appendElements('.feels-like', 'Feels like ' + weather.currentConditions.feelslike + '°F')
+    appendElements('.temp', weather.currentConditions.temp + ' '  + tempUnit)
+    appendElements('.max', weather.days[0].feelslikemax + ' '  + tempUnit)
+    appendElements('.min', weather.days[0].feelslikemin + ' '  + tempUnit)
+    appendElements('.feels-like', 'Feels like ' + weather.currentConditions.feelslike + ' '  + tempUnit)
     appendElements('.humidity', 'Humidity')
     appendElements('.humidity-value', + weather.currentConditions.humidity + '%');
     appendElements('.wind', 'Wind');
-    appendElements('.wind-value', `${weather.currentConditions.windspeed} mph ${getWindDirection(weather.currentConditions.winddir)}`);
+    appendElements('.wind-value', `${weather.currentConditions.windspeed} ${speedUnit} ${getWindDirection(weather.currentConditions.winddir)}`);
     appendElements('.sunrise', 'Sunrise')
     appendElements('.sunrise-value', weather.currentConditions.sunrise)
     appendElements('.sunset', 'Sunset')
@@ -61,6 +65,9 @@ function displayBasicDetails(weather) {
 }
 
 function displayHours(weather) {
+    let tempUnit = '°F';
+    let speedUnit = 'mph';
+    if (getUnitGroup() == 'metric') {tempUnit = '°C'; speedUnit = ' kmph'}
     const hourWeather = document.createElement('div');
     hourWeather.classList.add('hour-weather');
 
@@ -81,14 +88,17 @@ function displayHours(weather) {
     hourWeather.appendChild(iconDiv)
 
     createAddClassAddTextAppend('div', 'hour-weather-desc', weather.conditions, hourWeather);
-    createAddClassAddTextAppend('div', 'hour-temp', `<span><img src="${thermometerIcon}" alt=""></span>${weather.temp}°F`, hourWeather);
+    createAddClassAddTextAppend('div', 'hour-temp', `<span><img src="${thermometerIcon}" alt=""></span>${weather.temp} ${tempUnit}`, hourWeather);
     createAddClassAddTextAppend('div', 'hour-precip-prob', `<span><img src="${precipitationProbIcon}" alt=""></span>${weather.precipprob}%`, hourWeather);
-    createAddClassAddTextAppend('div', 'hour-wind-speed', `<span><img src="${windIcon}" alt=""></span>${weather.windspeed} mph ${getWindDirection(weather.winddir)}`, hourWeather);
+    createAddClassAddTextAppend('div', 'hour-wind-speed', `<span><img src="${windIcon}" alt=""></span>${weather.windspeed} ${speedUnit} ${getWindDirection(weather.winddir)}`, hourWeather);
 
     document.querySelector('.by-hours').appendChild(hourWeather);
 }
 
 function displayDays(weather) {
+    let tempUnit = '°F';
+    let speedUnit = 'mph';
+    if (getUnitGroup() == 'metric') {tempUnit = '°C'; speedUnit = ' kmph'}
     const dayWeather = document.createElement('div');
     dayWeather.classList.add('day-weather');
 
@@ -110,9 +120,9 @@ function displayDays(weather) {
     const dayTemp = document.createElement('div');
     dayTemp.classList.add('day-temp');
 
-    createAddClassAddTextAppend('div', 'day-avg-temp', `<span><img src="${thermometerIcon}" alt=""></span>${weather.temp}°F`, dayTemp);
-    createAddClassAddTextAppend('div', 'day-high-temp', `<span></span><div class="hi">Hi</div></span>${weather.tempmax}°F`, dayTemp);
-    createAddClassAddTextAppend('div', 'day-low-temp', `<span></span><div class="lo">Lo</div></span>${weather.tempmin}°F`, dayTemp);
+    createAddClassAddTextAppend('div', 'day-avg-temp', `<span><img src="${thermometerIcon}" alt=""></span>${weather.temp} ${tempUnit}`, dayTemp);
+    createAddClassAddTextAppend('div', 'day-high-temp', `<div class="hi">Hi</div>${weather.tempmax} ${tempUnit}`, dayTemp);
+    createAddClassAddTextAppend('div', 'day-low-temp', `<div class="lo">Lo</div>${weather.tempmin} ${tempUnit}`, dayTemp);
 
     dayWeather.appendChild(dayTemp);
 
@@ -121,7 +131,7 @@ function displayDays(weather) {
     windAndRain.classList.add('wind-and-rain');
 
     createAddClassAddTextAppend('div', 'day-precip-prob', `<span><img src="${precipitationProbIcon}" alt=""></span>${weather.precipprob}%`, windAndRain);
-    createAddClassAddTextAppend('div', 'day-wind-speed', `<span><img src="${windIcon}" alt="weather-icon"></span><span>${weather.windspeed} mph ${getWindDirection(weather.winddir)}</span>`, windAndRain);
+    createAddClassAddTextAppend('div', 'day-wind-speed', `<span><img src="${windIcon}" alt="weather-icon"></span><span>${weather.windspeed} ${speedUnit} ${getWindDirection(weather.winddir)}</span>`, windAndRain);
 
     dayWeather.appendChild(windAndRain);
 

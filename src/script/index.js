@@ -9,12 +9,19 @@ import {manageError, addListeners, hideLoader, showLoader} from './helperFunctio
 export {displayWeatherByHours, displayWeatherByDays}
 console.log('Hello World');
 
+let unitGroup = "imperial";
+
+export function getUnitGroup() {
+    return unitGroup;
+}
+
+export function setUnitGroup(newUnitGroup) {
+    unitGroup = newUnitGroup;
+}
+
 (async () => {
     showLoader()
     try {
-        console.log('Hello World');
-
-        // Attempt to get the user's current position
         const position = await new Promise((resolve, reject) => {
             navigator.geolocation.getCurrentPosition(resolve, reject);
         });
