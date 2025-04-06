@@ -10,8 +10,11 @@
     <div id="content">
         <div class="header">
             <div class="search-container">
-                <input type="text" id="city" placeholder="Enter city name">
+                <input type="text" id="city" placeholder="Enter city name" oninput="getCitiesSuggestion(this.value.trim())" autocomplete="off">
                 <button class="search-icon"><img src="assets/icons/search-icon.svg" alt="search icon"></button>
+            </div>
+            <div class="suggestions-container">
+                <ul id="suggestions"></ul>
             </div>
             <div class="header-icons">
                 <img src="assets/icons/like-icon.svg" alt="favorites" class="favorites">

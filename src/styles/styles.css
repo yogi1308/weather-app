@@ -79,12 +79,29 @@ div.hi, div.lo {
     padding: 0.5rem 1.5rem 0rem 1rem;
 }
 
+.suggestions-container {
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.185);
+    border-bottom-left-radius: 20px; /* Apply border-radius to the bottom-left corner */
+    border-bottom-right-radius: 20px; /* Apply border-radius to the bottom-right corner */
+    padding: 10px;
+    display: none;
+    z-index: 1000;
+    backdrop-filter: blur(3px);
+}
+
+ul {
+    list-style: none;
+    color: white;
+    padding: 0px;
+    z-index: 10000;
+}
+
 .search-container {
     display: flex;
     border: 1.75px solid #ccc;
-    border-radius: 10px;
+    border-radius: 1rem;
     width: 100%;
-    justify-content: space-between;
     padding-left: 10px;
 }
 
@@ -102,7 +119,8 @@ input:focus {
 }
 
 input#city {
-    width: max-content;
+    flex: 1;
+    color: white;
 }
 
 .header-icons {
