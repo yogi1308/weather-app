@@ -153,36 +153,49 @@ async function handleKeyPress() {
 
 }
 
+let cityInterval = null;
+
 function addListeners() {
-    let cityInterval = null;
     let prevCitySearch;
     
     document.querySelector('#city').addEventListener('focus', () => {
-      cityInterval = setInterval(async () => {
-        const input = document.querySelector('#city');
-        const query = input.value.trim();
-    
-        if (query.length > 2) {
-          const suggestionsContainer = document.querySelector('.suggestions-container');
-    
-          // Only fetch if query is new or if suggestions are hidden
-          if (query !== prevCitySearch || suggestionsContainer?.style.display === 'none') {
-            const suggestions = await getCitiesSuggestion(query);
-            displayCitySuggestions(suggestions);
-            prevCitySearch = query;
+        console.log('search bar focused')
+        if (cityInterval === null) {
+            cityInterval = setInterval(async () => {
+              console.log('set interval is still running')
+              const input = document.querySelector('#city');
+              const query = input.value.trim();
+          
+              if (query.length > 2) {
+                const suggestionsContainer = document.querySelector('.suggestions-container');
+          
+                if (query !== prevCitySearch || suggestionsContainer?.style.display === 'none') {
+                  const suggestions = await getCitiesSuggestion(query);
+                  displayCitySuggestions(suggestions);
+                  prevCitySearch = query;
+                }
+              } else {
+                clearCitySuggestions();
+              }
+            }, 1200);
+          } else {
+            // The interval already exists, so just let it continue running.
+            // Optionally, you could log or handle something here if needed:
+            console.log('City interval already running. Skipping new interval creation.');
           }
-        } 
-      }, 1200); // every 1.2 seconds
+          
     });
 
     document.querySelector('#city').addEventListener('blur', () => {
         setTimeout(() => {
-          clearInterval(cityInterval);
-          if (document.querySelector('div.suggestions-container')) {
-            clearCitySuggestions();
+          if (cityInterval !== null) {
+            clearInterval(cityInterval);
+            cityInterval = null;
+            console.log('🛑 city interval cleared on blur');
           }
-        }, 500);
-      });      
+          clearCitySuggestions();
+        }, 500); // Delay so click events on suggestions can still register
+    });     
 
     document.querySelector('#city').addEventListener('keydown', (event) => {
         if (event.key === 'Enter') {
