@@ -5,7 +5,7 @@ import {displayWeatherByHours, displayWeatherByDays} from './index.js'
 import {mainCardImageAndOtherStylesManager} from './assets-manager.js'
 
 export {addToFavorites, checkLikes, showLikedLocations}
-let favoritesList = [];
+let favoritesList = JSON.parse(localStorage.getItem('favoritesList')) || [];
 
 class FavoritesLocation {
     constructor(name, lat, lon) {
@@ -22,6 +22,7 @@ function getFavoritesList() {
 function addToFavoritesList(name, lat, lon) {
     const newLocation = new FavoritesLocation(name, lat, lon);
     favoritesList.push(newLocation);
+    localStorage.setItem('favoritesList', JSON.stringify(favoritesList));
     console.log(getFavoritesList())
 }
 
@@ -29,6 +30,7 @@ function removeFromFavoritesList(name, lat, lon) {
     favoritesList = favoritesList.filter(item =>
         !(item.name === name && item.latitude === lat && item.longitude === lon)
     );
+    localStorage.setItem('favoritesList', JSON.stringify(favoritesList));
     console.log(getFavoritesList());
 }
 
@@ -88,6 +90,7 @@ function showLikedLocations() {
                 addListeners();
                 document.querySelector('.favorite-locations').close();
                 hideLoader()
+                localStorage.setItem('mostRecent', JSON.stringify({ name: location.name, lat: location.latitude, lon: location.longitude }));
             })
         });
     }

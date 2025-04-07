@@ -9,7 +9,7 @@ import {manageError, addListeners, hideLoader, showLoader} from './helperFunctio
 export {displayWeatherByHours, displayWeatherByDays}
 console.log('Hello World');
 
-let unitGroup = "imperial";
+let unitGroup = localStorage.getItem('unitGroup') || 'imperial';
 
 export function getUnitGroup() {
     return unitGroup;
@@ -20,45 +20,85 @@ export function setUnitGroup(newUnitGroup) {
 }
 
 (async () => {
-    showLoader()
-    try {
-        const position = await new Promise((resolve, reject) => {
-            navigator.geolocation.getCurrentPosition(resolve, reject);
-        });
-
-        console.log('Geolocation successful:', position);
-
-        // Extract latitude and longitude
-        const { latitude, longitude } = position.coords;
-
-        // Fetch weather using the obtained coordinates
-        const location = await getCitybyCoords(latitude, longitude);
-        const locationName = `${location[0].city}, ${location[0].country}`;
-        const weather = await getWeatherUsingCoords(latitude, longitude, locationName);
-
-        // Display weather details
+    showLoader();
+  
+    const mostRecent = localStorage.getItem('mostRecent');
+    if (mostRecent) {
+      try {
+        const { name, lat, lon } = JSON.parse(mostRecent);
+        const weather = await getWeatherUsingCoords(lat, lon, name);
         displayBasicDetails(weather);
         displayWeatherByHours(weather);
         displayWeatherByDays(weather);
         addListeners();
-        mainCardImageAndOtherStylesManager(weather.currentConditions.conditions, weather.currentConditions.datetime, weather.currentConditions.sunrise, weather.currentConditions.sunset)
-        hideLoader()
-    } catch (error) {
-        console.warn('Geolocation failed or permission denied:', error);
-
-        // Fetch weather for Paris
-        const weather = await getWeather('Paris');
-        weather.resolvedAddress = 'Paris, France';
-
-        // Display weather details for Paris
-        displayBasicDetails(weather);
-        displayWeatherByHours(weather);
-        displayWeatherByDays(weather);
-        mainCardImageAndOtherStylesManager(weather.currentConditions.conditions, weather.currentConditions.datetime, weather.currentConditions.sunrise, weather.currentConditions.sunset)
-        addListeners();
+        mainCardImageAndOtherStylesManager(
+          weather.currentConditions.conditions,
+          weather.currentConditions.datetime,
+          weather.currentConditions.sunrise,
+          weather.currentConditions.sunset
+        );
         hideLoader();
+        return;
+      } catch (error) {
+        console.warn('Failed to load mostRecent data. Falling back to geolocation.', error);
+      }
     }
-})();
+  
+    try {
+      const position = await new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject);
+      });
+  
+      console.log('Geolocation successful:', position);
+  
+      const { latitude, longitude } = position.coords;
+      const location = await getCitybyCoords(latitude, longitude);
+      const locationName = `${location[0].city}, ${location[0].country}`;
+  
+      // Save mostRecent
+      localStorage.setItem(
+        'mostRecent',
+        JSON.stringify({ name: locationName, lat: latitude, lon: longitude })
+      );
+  
+      const weather = await getWeatherUsingCoords(latitude, longitude, locationName);
+      displayBasicDetails(weather);
+      displayWeatherByHours(weather);
+      displayWeatherByDays(weather);
+      addListeners();
+      mainCardImageAndOtherStylesManager(
+        weather.currentConditions.conditions,
+        weather.currentConditions.datetime,
+        weather.currentConditions.sunrise,
+        weather.currentConditions.sunset
+      );
+      hideLoader();
+    } catch (error) {
+      console.warn('Geolocation failed or permission denied:', error);
+  
+      const weather = await getWeather('Paris');
+      weather.resolvedAddress = 'Paris, France';
+  
+      // Save fallback as mostRecent
+      localStorage.setItem(
+        'mostRecent',
+        JSON.stringify({ name: 'Paris, France', lat: weather.latitude, lon: weather.longitude })
+      );
+  
+      displayBasicDetails(weather);
+      displayWeatherByHours(weather);
+      displayWeatherByDays(weather);
+      mainCardImageAndOtherStylesManager(
+        weather.currentConditions.conditions,
+        weather.currentConditions.datetime,
+        weather.currentConditions.sunrise,
+        weather.currentConditions.sunset
+      );
+      addListeners();
+      hideLoader();
+    }
+  })();
+  
 
 
 

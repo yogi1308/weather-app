@@ -91,6 +91,7 @@ function displayCitySuggestions(suggestions) {
                     mainCardImageAndOtherStylesManager(weather.currentConditions.conditions, weather.currentConditions.datetime, weather.currentConditions.sunrise, weather.currentConditions.sunset)
                     hideLoader()
                     document.querySelector('#city').value = '';
+                    localStorage.setItem('mostRecent', JSON.stringify({ name: location, lat: latitude, lon: longitude }));
                 }
                 catch (error) {
                     console.log(error)
@@ -141,6 +142,7 @@ async function handleKeyPress() {
             hideLoader()
             clearCitySuggestions()
             document.querySelector('#city').value = '';
+            localStorage.setItem('mostRecent', JSON.stringify({ name: locationName, lat: location[0].latitude, lon: location[0].longitude }));
         }
         catch (error) {
             console.log(error)
@@ -176,10 +178,13 @@ function addListeners() {
     });
 
     document.querySelector('#city').addEventListener('blur', () => {
-        clearInterval(cityInterval);
-        if (document.querySelector('div.suggestions-container')) {clearCitySuggestions()}
-    });
-
+        setTimeout(() => {
+          clearInterval(cityInterval);
+          if (document.querySelector('div.suggestions-container')) {
+            clearCitySuggestions();
+          }
+        }, 500);
+      });      
 
     document.querySelector('#city').addEventListener('keydown', (event) => {
         if (event.key === 'Enter') {
@@ -341,7 +346,7 @@ function changeUnits() {
     if (currentUnitGroup === 'metric') {
         let hourCounter = 1
         let hourWindCounter = 1
-        setUnitGroup('imperial');
+        localStorage.setItem('unitGroup', 'imperial');
         let tempUnit = '°F';
         let speedUnit = 'mph';
         appendElements('.temp', celsiusToFahrenheit(extractNumber(document.querySelector('.temp').textContent)) + tempUnit)
@@ -390,7 +395,7 @@ function changeUnits() {
         let hourCounter = 1
         let hourWindCounter = 1
         let loTempCounter = 1
-        setUnitGroup('metric');
+        localStorage.setItem('unitGroup', 'metric');
         let tempUnit = '°C';
         let speedUnit = 'kmph';
         appendElements('.temp', fahrenheitToCelsius(extractNumber(document.querySelector('.temp').textContent)) + ' '  + tempUnit)
