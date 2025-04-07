@@ -152,17 +152,35 @@ async function handleKeyPress() {
 }
 
 function addListeners() {
-    document.querySelector('#city').addEventListener('input', async (event) => {
-    const query = event.target.value.trim();
+    let cityInterval = null;
+    let prevCitySearch;
+    
+    document.querySelector('#city').addEventListener('focus', () => {
+      cityInterval = setInterval(async () => {
+        const input = document.querySelector('#city');
+        const query = input.value.trim();
+    
+        if (query.length > 2) {
+          const suggestionsContainer = document.querySelector('.suggestions-container');
+    
+          // Only fetch if query is new or if suggestions are hidden
+          if (query !== prevCitySearch || suggestionsContainer?.style.display === 'none') {
+            const suggestions = await getCitiesSuggestion(query);
+            displayCitySuggestions(suggestions);
+            prevCitySearch = query;
+          }
+        } else {
+          clearCitySuggestions();
+        }
+      }, 1200); // every 1.2 seconds
+    });
 
-    if (query.length > 2) { // Fetch suggestions only if input length > 2
-        const suggestions = await getCitiesSuggestion(query);
-        displayCitySuggestions(suggestions);
-    } 
-    else {
-        clearCitySuggestions();
-    }
-    })
+    document.querySelector('#city').addEventListener('blur', () => {
+        clearInterval(cityInterval);
+        if (document.querySelector('div.suggestions-container')) {clearCitySuggestions()}
+    });
+
+
     document.querySelector('#city').addEventListener('keydown', (event) => {
         if (event.key === 'Enter') {
             showLoader()
