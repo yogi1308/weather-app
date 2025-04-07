@@ -41,7 +41,7 @@ export function setUnitGroup(newUnitGroup) {
         displayWeatherByHours(weather);
         displayWeatherByDays(weather);
         addListeners();
-        mainCardImageAndOtherStylesManager(weather.currentConditions.conditions)
+        mainCardImageAndOtherStylesManager(weather.currentConditions.conditions, weather.currentConditions.datetime, weather.currentConditions.sunrise, weather.currentConditions.sunset)
         hideLoader()
     } catch (error) {
         console.warn('Geolocation failed or permission denied:', error);
@@ -54,7 +54,7 @@ export function setUnitGroup(newUnitGroup) {
         displayBasicDetails(weather);
         displayWeatherByHours(weather);
         displayWeatherByDays(weather);
-        mainCardImageAndOtherStylesManager(weather.currentConditions.conditions);
+        mainCardImageAndOtherStylesManager(weather.currentConditions.conditions, weather.currentConditions.datetime, weather.currentConditions.sunrise, weather.currentConditions.sunset)
         addListeners();
         hideLoader();
     }

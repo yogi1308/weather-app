@@ -23,7 +23,7 @@ function displayBasicDetails(weather) {
     if (getUnitGroup() == 'metric') {tempUnit = '°C'; speedUnit = ' kmph'}
     document.querySelector('.basic-info').style.display = 'block'
     document.querySelector('.hours-days').style.display = 'block'
-    if (document.querySelector('div.error-message')) {document.querySelector('div.error-message').style.display = 'none';}
+    if (document.querySelector('div.error-message')) {document.querySelector('div.error-message').remove();}
     if (document.querySelectorAll('.twinkle-star')) {
         document.querySelectorAll('.twinkle-star').forEach(star => {
             star.style.display = 'none';

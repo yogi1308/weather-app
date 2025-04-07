@@ -84,7 +84,7 @@ function showLikedLocations() {
                 displayBasicDetails(weather);
                 displayWeatherByHours(weather);
                 displayWeatherByDays(weather);
-                mainCardImageAndOtherStylesManager(weather.currentConditions.conditions);
+                mainCardImageAndOtherStylesManager(weather.currentConditions.conditions, weather.currentConditions.datetime, weather.currentConditions.sunrise, weather.currentConditions.sunset)
                 addListeners();
                 document.querySelector('.favorite-locations').close();
                 hideLoader()

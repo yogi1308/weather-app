@@ -88,7 +88,7 @@ function displayCitySuggestions(suggestions) {
                     displayBasicDetails(weather);
                     displayWeatherByHours(weather);
                     displayWeatherByDays(weather);
-                    mainCardImageAndOtherStylesManager(weather.currentConditions.conditions)
+                    mainCardImageAndOtherStylesManager(weather.currentConditions.conditions, weather.currentConditions.datetime, weather.currentConditions.sunrise, weather.currentConditions.sunset)
                     hideLoader()
                     document.querySelector('#city').value = '';
                 }
@@ -137,7 +137,7 @@ async function handleKeyPress() {
             displayBasicDetails(weather);
             displayWeatherByHours(weather);
             displayWeatherByDays(weather);
-            mainCardImageAndOtherStylesManager(weather.currentConditions.conditions)
+            mainCardImageAndOtherStylesManager(weather.currentConditions.conditions, weather.currentConditions.datetime, weather.currentConditions.sunrise, weather.currentConditions.sunset)
             hideLoader()
             clearCitySuggestions()
             document.querySelector('#city').value = '';
