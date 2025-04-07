@@ -102,22 +102,29 @@ export function setUnitGroup(newUnitGroup) {
 
 
 
-function displayWeatherByHours(weather) {
-    const now = new Date();
-    const currentHour = now.getHours();
+  function displayWeatherByHours(weather) {
     document.querySelector('.by-hours').innerHTML = '';
-
-    for (let i = 1; i <= 24; i++) { 
-        // Calculate the overall hour index starting from current hour.
-        const overallHour = currentHour + i;
-        // Determine which day to use: 0 for today, 1 for tomorrow, etc.
-        const dayIndex = Math.floor(overallHour / 24);
-        // Get the hour index for the day (0-23).
-        const hourIndex = overallHour % 24;
-        displayHours(weather.days[dayIndex].hours[hourIndex])
+  
+    let hoursShown = 0;
+  
+    for (let i = 0; i < weather.days.length; i++) {
+      const day = weather.days[i];
+  
+      for (let j = 0; j < day.hours.length; j++) {
+        const hourData = day.hours[j];
+        const currentEpoch = Math.floor(Date.now() / 1000);
+  
+        // Only include future hours (from the current time onwards)
+        if (hourData.datetimeEpoch >= currentEpoch) {
+          displayHours(hourData);
+          hoursShown++;
+  
+          if (hoursShown === 24) return; // or change to 48 if needed
+        }
+      }
     }
-}
-
+  }
+  
 function displayWeatherByDays(weather) {
   document.querySelector('.by-days').innerHTML = '';
     for (let i = 1; i < 15; i++) { 

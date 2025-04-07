@@ -313,8 +313,8 @@ function hideLoader() {
 
 function showSettingsDialog() {
     document.querySelector('.likes-or-change-units').showModal()
-    if (getUnitGroup() == 'metric') {document.querySelector('.change-units').textContent = 'Change Units to Imperial System (°F, mph)'}
-    else if (getUnitGroup() == 'imperial') {document.querySelector('.change-units').textContent = 'Change Units to Metric System (°C, kmph)'}
+    if (localStorage.getItem('unitGroup') == 'metric') {document.querySelector('.change-units').textContent = 'Change Units to Imperial System (°F, mph)'}
+    else if (localStorage.getItem('unitGroup') == 'imperial') {document.querySelector('.change-units').textContent = 'Change Units to Metric System (°C, kmph)'}
 }
 
 function changeUnits() {
@@ -330,7 +330,7 @@ function changeUnits() {
     
         let speedUnit, convertedSpeed;
     
-        if (getUnitGroup() === 'metric') {
+        if (localStorage.getItem('unitGroup') === 'metric') {
             // Switching to imperial
             speedUnit = 'mph';
             convertedSpeed = kmphToMph(windValue);
@@ -342,7 +342,7 @@ function changeUnits() {
     
         textSpan.textContent = `${convertedSpeed} ${speedUnit} ${direction}`;
     });
-    const currentUnitGroup = getUnitGroup();
+    const currentUnitGroup = localStorage.getItem('unitGroup');
     if (currentUnitGroup === 'metric') {
         let hourCounter = 1
         let hourWindCounter = 1
@@ -441,7 +441,7 @@ function changeUnits() {
             }
         });
     }
-    console.log(`Unit group is now: ${getUnitGroup()}`);
+    console.log(`Unit group is now: ${localStorage.getItem('unitGroup')}`);
     document.querySelector('.likes-or-change-units').close()
 }
 
