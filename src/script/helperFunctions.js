@@ -479,6 +479,7 @@ async function showCurrentLocation() {
           const position = await new Promise((resolve, reject) => {
             navigator.geolocation.getCurrentPosition(resolve, reject);
           });
+          showLoader();
       
           console.log('Geolocation successful:', position);
       
