@@ -95,7 +95,7 @@ div.hi, div.lo {
     padding: 10px;
     display: none;
     z-index: 1000;
-    backdrop-filter: blur(3px);
+    backdrop-filter: blur(5px);
 }
 
 ul {
@@ -393,7 +393,7 @@ dialog {
     border-radius: 1rem;
     background-color: rgba(255, 255, 255, 0.151);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(10px);
     width: max-content;
     max-width: calc(100% - 5rem);
 }
