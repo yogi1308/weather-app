@@ -4,7 +4,7 @@ export {getWeather, getCitiesSuggestion, getWeatherUsingCoords, getCitybyCoords}
 
 async function getWeather(city) {
     const key = '96QA75TCRT7MJRC6AV596A8Q8' // W2FDGJ2MLL2LU727Y6D8PWFW5, 96QA75TCRT7MJRC6AV596A8Q8 , 5J2S3WKKZUD2H6MGVCPY938LS
-    if (getUnitGroup() == 'metric') {
+    if (localStorage.getItem('unitGroup') == 'metric') {
       const baseURL = 'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/'
       let url = baseURL + city + '?unitGroup=metric&key=' + key
       let weather = await fetch(url, {mode: 'cors'})
@@ -27,7 +27,7 @@ async function getWeatherUsingCoords(lat, lon, location) {
   const baseURL = 'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/';
   let url;
 
-  if (getUnitGroup() === 'metric') {
+  if (localStorage.getItem('unitGroup') === 'metric') {
       url = `${baseURL}${lat},${lon}?unitGroup=metric&key=${key}`;
   } else {
       url = `${baseURL}${lat},${lon}?key=${key}`;

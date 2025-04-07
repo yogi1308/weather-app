@@ -20,7 +20,7 @@ function updateTimeDisplay(timezone) {
 function displayBasicDetails(weather) {
     let tempUnit = '°F';
     let speedUnit = 'mph';
-    if (getUnitGroup() == 'metric') {tempUnit = '°C'; speedUnit = ' kmph'}
+    if (localStorage.getItem('unitGroup') == 'metric') {tempUnit = '°C'; speedUnit = ' kmph'}
     document.querySelector('.basic-info').style.display = 'block'
     document.querySelector('.hours-days').style.display = 'block'
     if (document.querySelector('div.error-message')) {document.querySelector('div.error-message').remove();}
@@ -80,7 +80,7 @@ function displayBasicDetails(weather) {
 function displayHours(weather) {
     let tempUnit = '°F';
     let speedUnit = 'mph';
-    if (getUnitGroup() == 'metric') {tempUnit = '°C'; speedUnit = ' kmph'}
+    if (localStorage.getItem('unitGroup') == 'metric') {tempUnit = '°C'; speedUnit = ' kmph'}
     const hourWeather = document.createElement('div');
     hourWeather.classList.add('hour-weather');
 
@@ -111,7 +111,7 @@ function displayHours(weather) {
 function displayDays(weather) {
     let tempUnit = '°F';
     let speedUnit = 'mph';
-    if (getUnitGroup() == 'metric') {tempUnit = '°C'; speedUnit = ' kmph'}
+    if (localStorage.getItem('unitGroup') == 'metric') {tempUnit = '°C'; speedUnit = ' kmph'}
     const dayWeather = document.createElement('div');
     dayWeather.classList.add('day-weather');
 

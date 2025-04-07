@@ -171,9 +171,7 @@ function addListeners() {
             displayCitySuggestions(suggestions);
             prevCitySearch = query;
           }
-        } else {
-          clearCitySuggestions();
-        }
+        } 
       }, 1200); // every 1.2 seconds
     });
 
