@@ -3,6 +3,7 @@ import {getWeatherUsingCoords, getWeather, getCitybyCoords, getCitiesSuggestion}
 import {displayBasicDetails, timeIntervalId} from './populateDOM.js'
 import {mainCardImageAndOtherStylesManager} from './assets-manager.js'
 import {displayWeatherByHours, displayWeatherByDays, getUnitGroup, setUnitGroup} from './index.js'
+import {addToFavorites, showLikedLocations} from './likeFunctions.js'
 import clearNight from '../assets/weather-images/clear_night.png'
 
 export {getWindDirection, appendElements, createAddClassAddTextAppend, getDateTime, styleSetter, manageError, displayCitySuggestions, clearCitySuggestions, handleKeyPress, addListeners, showLoader, hideLoader}
@@ -175,7 +176,18 @@ function addListeners() {
         handleKeyPress();
     })
 
-    document.querySelector('.settings').addEventListener('click', changeUnits)
+    document.querySelector('.settings').addEventListener('click', showSettingsDialog)
+    document.querySelector('.change-units').addEventListener('click', changeUnits)
+    document.querySelectorAll('.close-button').forEach(button => {button.addEventListener('click', () => {
+        const dialog = button.closest('dialog');
+        if (dialog) dialog.close();});
+    });
+
+    document.querySelector('.favorites').addEventListener('click', addToFavorites)
+
+    document.querySelector('.like-filled-icon').addEventListener('click', addToFavorites)
+
+    document.querySelector('.show-favorite-locations').addEventListener('click', showLikedLocations)
 }
 
 function manageError() {
@@ -199,6 +211,14 @@ function manageError() {
         errorMessage.style.color = 'white';
         errorMessage.style.fontSize = '1.5rem';
         basicWeatherDetailsDiv.appendChild(errorMessage);
+    }
+
+    const unfilled = document.querySelector('.favorites');
+    const filled = document.querySelector('.like-filled-icon');
+
+    if (unfilled.style.display == 'none' || filled.style.display == 'block') {
+        unfilled.style.display = 'block' 
+        filled.style.display = 'none'
     }
 
     // Twinkling star style
@@ -262,8 +282,6 @@ function showLoader() {
     document.body.style.background = 'black';
 }
 
-
-
 function hideLoader() {
     document.getElementById('loader').style.display = 'none';
     document.getElementById('content').style.display = 'block';
@@ -273,7 +291,13 @@ function hideLoader() {
     body.style.width = 'auto';
 }
 
-async function changeUnits() {
+function showSettingsDialog() {
+    document.querySelector('.likes-or-change-units').showModal()
+    if (getUnitGroup() == 'metric') {document.querySelector('.change-units').textContent = 'Change Units to Imperial System (°F, mph)'}
+    else if (getUnitGroup() == 'imperial') {document.querySelector('.change-units').textContent = 'Change Units to Metric System (°C, kmph)'}
+}
+
+function changeUnits() {
     console.log('Units changed');
     document.querySelectorAll('div.day-wind-speed').forEach(temp => {
         const spans = temp.querySelectorAll('span');
@@ -398,7 +422,7 @@ async function changeUnits() {
         });
     }
     console.log(`Unit group is now: ${getUnitGroup()}`);
-    
+    document.querySelector('.likes-or-change-units').close()
 }
 
 function mphToKmph(mph) {
@@ -429,6 +453,3 @@ function extractWindDirection(input) {
     const match = str.match(/[A-Z]{1,3}$/);
     return match ? match[0] : '';
 }
-  
-// #content > div.main > div.hours-days > div.by-hours > div:nth-child(3) > div.hour-temp
-    

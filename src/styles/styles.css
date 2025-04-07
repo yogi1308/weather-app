@@ -117,7 +117,7 @@ li {
     padding-left: 10px;
 }
 
-button, .favorites, .settings {
+button, .favorites, .settings, .like-filled-icon {
     cursor: pointer;
 }
 
@@ -156,7 +156,7 @@ input#city {
     width: 90%;
     box-sizing: border-box;
     position: fixed;
-    top: 10%;
+    top: 7.5%;
     left: 5%;
     font-size: 1.2rem;
     color: white;
@@ -383,3 +383,49 @@ body > div.error-message > h3 {
     width: 0px;
 }
 
+dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 1.5rem 1.5rem;
+    border: none;
+    border-radius: 1rem;
+    background-color: rgba(255, 255, 255, 0.151);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(5px);
+    width: max-content;
+    max-width: calc(100% - 5rem);
+}
+
+dialog > button {
+    border: none;
+    color: rgba(255, 60, 0, 0.785);
+    background: transparent;
+    position: fixed;
+    top: 0.5rem;
+    right: 0.5rem;
+    font: 2rem;
+}
+  
+button:hover {
+    color: red;
+    font: 2rem;
+    text-shadow:  
+    0.5px 0.5px 0.25px gray,  /* Bottom-right */
+        -0.5px -0.5px 0.25px gray, /* Top-left */
+        -0.5px 0.5px 0.25px gray,  /* Bottom-left */
+        0.5px -0.5px 0.25px gray;  /* Top-right */
+}
+
+li.change-units:hover, li.show-favorite-locations:hover, dialog.favorite-locations > ul > li:hover {
+    text-shadow:  
+    0.5px 0.5px 0.25px gray,  /* Bottom-right */
+        -0.5px -0.5px 0.25px gray, /* Top-left */
+        -0.5px 0.5px 0.25px gray,  /* Bottom-left */
+        0.5px -0.5px 0.25px gray;  /* Top-right */
+}
+
+.likes-or-change-units > ul > li, dialog.favorite-locations > ul > li{
+    padding: 0.5rem;
+}

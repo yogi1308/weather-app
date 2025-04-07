@@ -23,14 +23,21 @@ async function getWeather(city) {
 }
 
 async function getWeatherUsingCoords(lat, lon, location) {
-    const key = 'W2FDGJ2MLL2LU727Y6D8PWFW5' // W2FDGJ2MLL2LU727Y6D8PWFW5, 96QA75TCRT7MJRC6AV596A8Q8 , 5J2S3WKKZUD2H6MGVCPY938LS
-    const baseURL = 'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/'
-    let url = baseURL + lat + ',' + lon + '?key=' + key
-    let weather = await fetch(url, {mode: 'cors'})
-    weather = await weather.json()
-    weather.resolvedAddress = location
-    console.log(weather)
-    return weather
+  const key = '96QA75TCRT7MJRC6AV596A8Q8'; // Replace with your preferred key
+  const baseURL = 'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/';
+  let url;
+
+  if (getUnitGroup() === 'metric') {
+      url = `${baseURL}${lat},${lon}?unitGroup=metric&key=${key}`;
+  } else {
+      url = `${baseURL}${lat},${lon}?key=${key}`;
+  }
+
+  let weather = await fetch(url, { mode: 'cors' });
+  weather = await weather.json();
+  weather.resolvedAddress = location; // override location label
+  console.log(weather);
+  return weather;
 }
 
 async function getCitiesSuggestion(input) {

@@ -6,6 +6,7 @@ import precipitationProbIcon from '../assets/icons/precipitation-probability-ico
 import {getWindDirection, appendElements, createAddClassAddTextAppend, getDateTime} from './helperFunctions.js'
 import {iconsManager} from './assets-manager.js'
 import { getUnitGroup } from './index.js';
+import {checkLikes} from './likeFunctions.js'
 
 export {displayHours, displayDays, displayBasicDetails, updateTimeDisplay, timeIntervalId}
 
@@ -13,7 +14,7 @@ let timeIntervalId;
 
 function updateTimeDisplay(timezone) {
     const formattedTime = formatInTimeZone(new Date(), timezone, 'EEEE, MMMM d, yyyy, hh:mm:ss a');
-    document.querySelector('.time').innerHTML = '&nbsp;' + formattedTime;
+    document.querySelector('.time').innerHTML = formattedTime;
 }
 
 function displayBasicDetails(weather) {
@@ -33,6 +34,7 @@ function displayBasicDetails(weather) {
     appendElements('.weather-condition', weather.currentConditions.conditions)
     appendElements('.weather-desc', weather.description)
     appendElements('.location', weather.resolvedAddress)
+    appendElements('.coordinates', weather.latitude + ', ' + weather.longitude)
     appendElements('.temp', weather.currentConditions.temp + ' '  + tempUnit)
     appendElements('.max', weather.days[0].feelslikemax + ' '  + tempUnit)
     appendElements('.min', weather.days[0].feelslikemin + ' '  + tempUnit)
@@ -62,6 +64,17 @@ function displayBasicDetails(weather) {
 
     // Start a new interval to update the time
     timeIntervalId = setInterval(() => updateTimeDisplay(timezone), 1000);
+
+    const [lat, lon] = document.querySelector('.coordinates').textContent.split(', ')
+    if (checkLikes(document.querySelector('.location').textContent, lat, lon)) {
+        document.querySelector('.favorites').style.display = 'none' 
+        document.querySelector('.like-filled-icon').style.display = 'block'
+    }
+
+    else if (!checkLikes(document.querySelector('.location').textContent, lat, lon)) {
+        document.querySelector('.favorites').style.display = 'block' 
+        document.querySelector('.like-filled-icon').style.display = 'none'
+    }
 }
 
 function displayHours(weather) {

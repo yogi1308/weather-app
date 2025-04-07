@@ -21,6 +21,7 @@
             </div>
             <div class="header-icons">
                 <img src="assets/icons/like-icon.svg" alt="favorites" class="favorites">
+                <img src="assets/icons/like-filled-icon.svg" alt="favorites" class="like-filled-icon" style="display: none;">
                 <img src="assets/icons/settings-icon.svg" alt="settings" class="settings">
             </div>
         </div>
@@ -28,6 +29,7 @@
             <div class="basic-weather-details">
                 <div class="basic-info">
                     <div class="location"></div>
+                    <div class="coordinates"></div>
                     <div class="time"></div>
                     <div class="all-temp">
                         <div class="temp"></div>
@@ -65,6 +67,17 @@
                 <div class="by-days"></div>
             </div>
         </div>
+        <dialog class="likes-or-change-units">
+            <button class="close-button">X</button>
+            <ul>
+                <li class="change-units"></li>
+                <li class="show-favorite-locations">Show Favovorite Locations</li>
+            </ul>
+        </dialog>
+        <dialog class="favorite-locations">
+            <button class="close-button">X</button>
+            <ul class="favorite-locations-ul"></ul>
+        </dialog>
     </div>
 </body>
 </html>
