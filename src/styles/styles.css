@@ -117,7 +117,7 @@ li {
     padding-left: 10px;
 }
 
-button, .favorites, .settings, .like-filled-icon {
+button, .favorites, .settings, .like-filled-icon, .location-icon {
     cursor: pointer;
 }
 

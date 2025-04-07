@@ -206,6 +206,8 @@ function addListeners() {
     document.querySelector('.like-filled-icon').addEventListener('click', addToFavorites)
 
     document.querySelector('.show-favorite-locations').addEventListener('click', showLikedLocations)
+
+    document.querySelector('.location-icon').addEventListener('click', showCurrentLocation)
 }
 
 function manageError() {
@@ -470,4 +472,42 @@ function extractWindDirection(input) {
     const str = String(input);
     const match = str.match(/[A-Z]{1,3}$/);
     return match ? match[0] : '';
+}
+
+async function showCurrentLocation() {
+    try {
+          const position = await new Promise((resolve, reject) => {
+            navigator.geolocation.getCurrentPosition(resolve, reject);
+          });
+      
+          console.log('Geolocation successful:', position);
+      
+          const { latitude, longitude } = position.coords;
+          const location = await getCitybyCoords(latitude, longitude);
+          const locationName = `${location[0].city}, ${location[0].country}`;
+      
+          // Save mostRecent
+          localStorage.setItem(
+            'mostRecent',
+            JSON.stringify({ name: locationName, lat: latitude, lon: longitude })
+          );
+      
+          const weather = await getWeatherUsingCoords(latitude, longitude, locationName);
+          displayBasicDetails(weather);
+          displayWeatherByHours(weather);
+          displayWeatherByDays(weather);
+          addListeners();
+          mainCardImageAndOtherStylesManager(
+            weather.currentConditions.conditions,
+            weather.currentConditions.datetime,
+            weather.currentConditions.sunrise,
+            weather.currentConditions.sunset
+          );
+          hideLoader();
+    }
+    catch (error) {
+        console.log(error)
+        manageError();
+        hideLoader()
+    }
 }
