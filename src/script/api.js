@@ -85,12 +85,3 @@ async function getCitybyCoords(lat, lon) {
         console.error(error);
     }
 }
-
-
-
-
-
-
-
-
-

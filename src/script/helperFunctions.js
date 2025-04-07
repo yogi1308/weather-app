@@ -131,13 +131,9 @@ function clearCitySuggestions() {
 
 async function handleKeyPress() {
     try {
-            showLoader()
-            console.log(document.querySelector('#city').value.trim())
-            let weather = await getWeather(document.querySelector('#city').value.trim())
-            console.log(document.querySelector('#city').value.trim())
-            let location = await getCitybyCoords(weather.latitude, weather.longitude)
-            location = `${location[0].city}, ${location[0].country}`
-            weather.resolvedAddress = location
+            let location = await getCitiesSuggestion(document.querySelector('#city').value.trim())
+            const locationName = `${location[0].city}, ${location[0].country}`
+            let weather = await getWeatherUsingCoords(location[0].latitude, location[0].longitude, locationName)
             displayBasicDetails(weather);
             displayWeatherByHours(weather);
             displayWeatherByDays(weather);
@@ -169,9 +165,10 @@ function addListeners() {
     })
     document.querySelector('#city').addEventListener('keydown', (event) => {
         if (event.key === 'Enter') {
-            handleKeyPress();
+            showLoader()
+            setTimeout(() => {handleKeyPress()}, 1500); // 1.1 second delay
         }
-    })
+    });
     document.querySelector('#content > div.header > div.search-container > button').addEventListener('click', () => {
         handleKeyPress();
     })
