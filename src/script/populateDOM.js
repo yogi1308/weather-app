@@ -3,12 +3,11 @@ import { formatInTimeZone } from 'date-fns-tz';
 import thermometerIcon from '../assets/icons/thermometer-icon.svg';
 import windIcon from '../assets/icons/wind-icon.svg';
 import precipitationProbIcon from '../assets/icons/precipitation-probability-icon.svg';
-import {getWindDirection, appendElements, createAddClassAddTextAppend, getDateTime} from './helperFunctions.js'
-import {iconsManager} from './assets-manager.js'
-import { getUnitGroup } from './index.js';
+import {getWindDirection, appendElements, createAddClassAddTextAppend} from './helperFunctions.js'
+import {iconsManager, displayAppropriateAQIconAndGetCategory} from './assets-manager.js'
 import {checkLikes} from './likeFunctions.js'
 
-export {displayHours, displayDays, displayBasicDetails, updateTimeDisplay, timeIntervalId}
+export {displayHours, displayDays, displayBasicDetails, updateTimeDisplay, timeIntervalId, displayAQIDetails}
 
 let timeIntervalId;
 
@@ -17,7 +16,7 @@ function updateTimeDisplay(timezone) {
     document.querySelector('.time').innerHTML = formattedTime;
 }
 
-function displayBasicDetails(weather) {
+async function displayBasicDetails(weather) {
     let tempUnit = '°F';
     let speedUnit = 'mph';
     if (localStorage.getItem('unitGroup') == 'metric') {tempUnit = '°C'; speedUnit = ' kmph'}
@@ -75,6 +74,12 @@ function displayBasicDetails(weather) {
         document.querySelector('.favorites').style.display = 'block' 
         document.querySelector('.like-filled-icon').style.display = 'none'
     }
+
+}
+
+function displayAQIDetails(aqi) {
+    const aqiQualitativeData = displayAppropriateAQIconAndGetCategory(aqi);
+    document.querySelector('.aqi-value').innerHTML = `${aqiQualitativeData}: ${aqi}`
 }
 
 function displayHours(weather) {

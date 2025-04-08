@@ -20,6 +20,12 @@ import thunderIcon from "../assets/icons/animated/thunderstorms.svg"
 import thunderRainIcon from "../assets/icons/animated/thunderstorms.svg"
 import windIcon from "../assets/icons/animated/wind.svg"
 import rainSnowIcon from "../assets/icons/animated/rain-and-snow-mix.svg"
+import greenAQI from "../assets/icons/AQ-green-icon.svg"
+import orangeAQI from "../assets/icons/AQ-yellow-icon.svg"
+import redAQI from "../assets/icons/AQ-red-icon.svg"
+import purpleAQI from "../assets/icons/AQ-purple-icon.svg"
+import maroonAQI from "../assets/icons/AQ-maroon-icon.svg"
+import blackAQI from "../assets/icons/AQ-black-icon.svg"
 
 import defaultBg from '../assets/weather-images/default_bg.jpg';
 import defaultNightBg from '../assets/weather-images/default_night.png';
@@ -56,7 +62,7 @@ import dustStormNight from '../assets/weather-images/dust_storm_night.png';
 
 import { styleSetter } from './helperFunctions.js';
 
-export { iconsManager, mainCardImageAndOtherStylesManager };
+export { iconsManager, mainCardImageAndOtherStylesManager, displayAppropriateAQIconAndGetCategory};
 
 // --------- Helper Functions ---------
 
@@ -264,4 +270,15 @@ const iconsManager = {
     'thunder' : thunderIcon,
     'thunder-rain' : thunderRainIcon,
     'wind' : windIcon
+}
+
+function displayAppropriateAQIconAndGetCategory(aqi) {
+  const aqiIconImg = document.querySelector('.aqi > span > img')
+  if (aqi <= 50) {aqiIconImg.src = greenAQI; return "Good"};
+  if (aqi <= 100) {aqiIconImg.src = yellowAQI; return "Moderate"};
+  if (aqi <= 150) {aqiIconImg.src = orangeAQI; return "Sensitive"};
+  if (aqi <= 200) {aqiIconImg.src = redAQI; return "Unhealthy"};
+  if (aqi <= 300) {aqiIconImg.src = purpleAQI; return "Very Unhealthy"};
+  if (aqi <= 500) {aqiIconImg.src = maroonAQI; return "Hazardous"};
+  aqiIconImg.src = blackAQI; return "Extremely Hazardous"
 }

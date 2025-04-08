@@ -1,6 +1,6 @@
 import {getUnitGroup, setUnitGroup} from './index.js'
 
-export {getWeather, getCitiesSuggestion, getWeatherUsingCoords, getCitybyCoords}
+export {getWeather, getCitiesSuggestion, getWeatherUsingCoords, getCitybyCoords, getAQI}
 
 async function getWeather(city) {
     const key = '96QA75TCRT7MJRC6AV596A8Q8' // W2FDGJ2MLL2LU727Y6D8PWFW5, 96QA75TCRT7MJRC6AV596A8Q8 , 5J2S3WKKZUD2H6MGVCPY938LS
@@ -84,4 +84,20 @@ async function getCitybyCoords(lat, lon) {
     } catch (error) {
         console.error(error);
     }
+}
+
+async function getAQI(lat, lon) {
+  const baseUrl = 'https://api.api-ninjas.com/v1/airquality?'
+  const coords = `lat=${lat}&lon=${lon}`
+  const key = 'eORHBtMdjzrwb8j8r0mw4g==WjIzwtZAM7CEJIFF'
+  try {
+    const url = baseUrl + coords
+    const response = await fetch(baseUrl + coords, {mode: 'cors', headers: { 'X-Api-Key': key }})
+    const aqiData = await response.json()
+    console.log(aqiData)
+    return aqiData
+  }
+  catch {
+    console.log(aqiData)
+  }
 }

@@ -429,3 +429,16 @@ li.change-units:hover, li.show-favorite-locations:hover, dialog.favorite-locatio
 .likes-or-change-units > ul > li, dialog.favorite-locations > ul > li{
     padding: 0.5rem;
 }
+
+.aqi {
+    display: flex;
+    gap: 0.5rem;
+}
+
+#content > div.main > div.basic-weather-details > div > div.other-details > div.aqi > span > img {
+    text-shadow:  
+        1px 1px 0.25px white,  /* Bottom-right */
+        -1px -1px 0.25px white, /* Top-left */
+        -1px 1px 0.25px white,  /* Bottom-left */
+        1px -1px 0.25px white;  /* Top-right */
+}

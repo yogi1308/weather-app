@@ -1,6 +1,6 @@
-import {getWeatherUsingCoords} from './api.js'
+import {getWeatherUsingCoords, getAQI} from './api.js'
 import {showLoader, hideLoader, addListeners} from './helperFunctions.js'
-import {displayBasicDetails} from './populateDOM.js'
+import {displayBasicDetails, displayAQIDetails} from './populateDOM.js'
 import {displayWeatherByHours, displayWeatherByDays} from './index.js'
 import {mainCardImageAndOtherStylesManager} from './assets-manager.js'
 
@@ -83,6 +83,8 @@ function showLikedLocations() {
             listItem.addEventListener('click', async () => {
                 showLoader()
                 const weather = await getWeatherUsingCoords(location.latitude, location.longitude, location.name)
+                const aqi = await getAQI(location.latitude, location.longitude);
+                displayAQIDetails(aqi.overall_aqi)
                 displayBasicDetails(weather);
                 displayWeatherByHours(weather);
                 displayWeatherByDays(weather);

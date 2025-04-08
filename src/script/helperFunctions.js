@@ -1,6 +1,6 @@
 import {format} from 'date-fns'
-import {getWeatherUsingCoords, getWeather, getCitybyCoords, getCitiesSuggestion} from './api.js'
-import {displayBasicDetails, timeIntervalId} from './populateDOM.js'
+import {getWeatherUsingCoords, getWeather, getCitybyCoords, getCitiesSuggestion, getAQI} from './api.js'
+import {displayBasicDetails, timeIntervalId, displayAQIDetails} from './populateDOM.js'
 import {mainCardImageAndOtherStylesManager} from './assets-manager.js'
 import {displayWeatherByHours, displayWeatherByDays, getUnitGroup, setUnitGroup} from './index.js'
 import {addToFavorites, showLikedLocations} from './likeFunctions.js'
@@ -85,6 +85,8 @@ function displayCitySuggestions(suggestions) {
                 try {
                     showLoader()
                     let weather = await getWeatherUsingCoords(latitude, longitude, location)
+                    const aqi = await getAQI(latitude, longitude);
+                    displayAQIDetails(aqi.overall_aqi)
                     displayBasicDetails(weather);
                     displayWeatherByHours(weather);
                     displayWeatherByDays(weather);
@@ -135,6 +137,8 @@ async function handleKeyPress() {
             let location = await getCitiesSuggestion(document.querySelector('#city').value.trim())
             const locationName = `${location[0].city}, ${location[0].country}`
             let weather = await getWeatherUsingCoords(location[0].latitude, location[0].longitude, locationName)
+            const aqi = await getAQI(location[0].latitude, location[0].longitude);
+            displayAQIDetails(aqi.overall_aqi)
             displayBasicDetails(weather);
             displayWeatherByHours(weather);
             displayWeatherByDays(weather);
@@ -507,6 +511,8 @@ async function showCurrentLocation() {
           );
       
           const weather = await getWeatherUsingCoords(latitude, longitude, locationName);
+          const aqi = await getAQI(latitude, longitude);
+          displayAQIDetails(aqi.overall_aqi)
           displayBasicDetails(weather);
           displayWeatherByHours(weather);
           displayWeatherByDays(weather);

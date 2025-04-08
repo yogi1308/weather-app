@@ -1,9 +1,9 @@
 //weather alerts 
 import {format, getHours} from 'date-fns'
 import '../styles/styles.css';
-import {getCitybyCoords, getWeather, getWeatherUsingCoords} from './api.js'
+import {getCitybyCoords, getWeather, getWeatherUsingCoords, getAQI} from './api.js'
 import {mainCardImageAndOtherStylesManager} from './assets-manager.js'
-import {displayHours, displayDays, displayBasicDetails} from './populateDOM.js'
+import {displayHours, displayDays, displayBasicDetails, displayAQIDetails} from './populateDOM.js'
 import {manageError, addListeners, hideLoader, showLoader} from './helperFunctions.js'
 
 export {displayWeatherByHours, displayWeatherByDays}
@@ -27,7 +27,9 @@ export function setUnitGroup(newUnitGroup) {
       try {
         const { name, lat, lon } = JSON.parse(mostRecent);
         const weather = await getWeatherUsingCoords(lat, lon, name);
+        const aqi = await getAQI(lat, lon);
         displayBasicDetails(weather);
+        displayAQIDetails(aqi.overall_aqi)
         displayWeatherByHours(weather);
         displayWeatherByDays(weather);
         addListeners();
@@ -62,7 +64,9 @@ export function setUnitGroup(newUnitGroup) {
       );
   
       const weather = await getWeatherUsingCoords(latitude, longitude, locationName);
+      const aqi = await getAQI(latitude, longitude);
       displayBasicDetails(weather);
+      displayAQIDetails(aqi.overall_aqi)
       displayWeatherByHours(weather);
       displayWeatherByDays(weather);
       addListeners();
@@ -77,6 +81,7 @@ export function setUnitGroup(newUnitGroup) {
       console.warn('Geolocation failed or permission denied:', error);
   
       const weather = await getWeather('Paris');
+      const aqi = await getAQI(weather.latitude, weather.longitude);
       weather.resolvedAddress = 'Paris, France';
   
       // Save fallback as mostRecent
@@ -86,6 +91,7 @@ export function setUnitGroup(newUnitGroup) {
       );
   
       displayBasicDetails(weather);
+      displayAQIDetails(aqi.overall_aqi)
       displayWeatherByHours(weather);
       displayWeatherByDays(weather);
       mainCardImageAndOtherStylesManager(
