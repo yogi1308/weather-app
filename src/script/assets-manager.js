@@ -84,7 +84,6 @@ function normalize(condition) {
     const sunsetEpoch = parseTimeStringToEpoch(sunsetTime);
   
     const timeOfDay = (currentEpoch < sunriseEpoch || currentEpoch > sunsetEpoch) ? 'night' : 'day';
-    console.log(`🌗 Time of day determined as: ${timeOfDay}`);
     return timeOfDay;
   }
 
@@ -275,8 +274,7 @@ const iconsManager = {
 function displayAppropriateAQIconAndGetCategory(aqi) {
   const aqiIconImg = document.querySelector('.aqi > span > img')
   if (aqi <= 50) {aqiIconImg.src = greenAQI; return "Good"};
-  if (aqi <= 100) {aqiIconImg.src = yellowAQI; return "Moderate"};
-  if (aqi <= 150) {aqiIconImg.src = orangeAQI; return "Sensitive"};
+  if (aqi <= 100) {aqiIconImg.src = orangeAQI; return "Moderate"};
   if (aqi <= 200) {aqiIconImg.src = redAQI; return "Unhealthy"};
   if (aqi <= 300) {aqiIconImg.src = purpleAQI; return "Very Unhealthy"};
   if (aqi <= 500) {aqiIconImg.src = maroonAQI; return "Hazardous"};

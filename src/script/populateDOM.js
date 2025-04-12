@@ -29,7 +29,6 @@ async function displayBasicDetails(weather) {
         });
     }
     let timezone = weather.timezone
-    console.log(weather);
     appendElements('.weather-condition', weather.currentConditions.conditions)
     appendElements('.weather-desc', weather.description)
     appendElements('.location', weather.resolvedAddress)

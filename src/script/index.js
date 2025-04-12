@@ -7,16 +7,9 @@ import {displayHours, displayDays, displayBasicDetails, displayAQIDetails} from 
 import {manageError, addListeners, hideLoader, showLoader} from './helperFunctions.js'
 
 export {displayWeatherByHours, displayWeatherByDays}
-console.log('Hello World');
 
-let unitGroup = localStorage.getItem('unitGroup') || 'imperial';
-
-export function getUnitGroup() {
-    return unitGroup;
-}
-
-export function setUnitGroup(newUnitGroup) {
-    unitGroup = newUnitGroup;
+if (!localStorage.getItem('unitGroup')) {
+  localStorage.setItem('unitGroup', 'imperial');
 }
 
 (async () => {
@@ -50,8 +43,6 @@ export function setUnitGroup(newUnitGroup) {
       const position = await new Promise((resolve, reject) => {
         navigator.geolocation.getCurrentPosition(resolve, reject);
       });
-  
-      console.log('Geolocation successful:', position);
   
       const { latitude, longitude } = position.coords;
       const location = await getCitybyCoords(latitude, longitude);

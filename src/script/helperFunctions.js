@@ -80,7 +80,6 @@ function displayCitySuggestions(suggestions) {
                 const location = suggestionItem.textContent;
                 const latitude = suggestions.find(item => item.name === city.name && item.country === city.country).latitude;
                 const longitude = suggestions.find(item => item.name === city.name && item.country === city.country).longitude;
-                console.log(latitude, longitude, location)
                 clearCitySuggestions()
                 try {
                     showLoader()
@@ -163,10 +162,8 @@ function addListeners() {
     let prevCitySearch;
     
     document.querySelector('#city').addEventListener('focus', () => {
-        console.log('search bar focused')
         if (cityInterval === null) {
             cityInterval = setInterval(async () => {
-              console.log('set interval is still running')
               const input = document.querySelector('#city');
               const query = input.value.trim();
           
@@ -182,11 +179,8 @@ function addListeners() {
                 clearCitySuggestions();
               }
             }, 1200);
-          } else {
-            // The interval already exists, so just let it continue running.
-            // Optionally, you could log or handle something here if needed:
-            console.log('City interval already running. Skipping new interval creation.');
-          }
+          } 
+          else {}
           
     });
 
@@ -195,7 +189,6 @@ function addListeners() {
           if (cityInterval !== null) {
             clearInterval(cityInterval);
             cityInterval = null;
-            console.log('🛑 city interval cleared on blur');
           }
           clearCitySuggestions();
         }, 500); // Delay so click events on suggestions can still register
@@ -335,7 +328,6 @@ function showSettingsDialog() {
 }
 
 function changeUnits() {
-    console.log('Units changed');
     document.querySelectorAll('div.day-wind-speed').forEach(temp => {
         const spans = temp.querySelectorAll('span');
         if (spans.length < 2) return; // Make sure there’s text to update
@@ -458,7 +450,6 @@ function changeUnits() {
             }
         });
     }
-    console.log(`Unit group is now: ${localStorage.getItem('unitGroup')}`);
     document.querySelector('.likes-or-change-units').close()
 }
 
@@ -485,7 +476,6 @@ function extractNumber(input) {
 }
   
 function extractWindDirection(input) {
-    console.log(input)
     const str = String(input);
     const match = str.match(/[A-Z]{1,3}$/);
     return match ? match[0] : '';
@@ -497,8 +487,6 @@ async function showCurrentLocation() {
             navigator.geolocation.getCurrentPosition(resolve, reject);
           });
           showLoader();
-      
-          console.log('Geolocation successful:', position);
       
           const { latitude, longitude } = position.coords;
           const location = await getCitybyCoords(latitude, longitude);

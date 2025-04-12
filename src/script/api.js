@@ -9,7 +9,6 @@ async function getWeather(city) {
       let url = baseURL + city + '?unitGroup=metric&key=' + key
       let weather = await fetch(url, {mode: 'cors'})
       weather = await weather.json()
-      console.log(weather)
       return weather
     }
     else {
@@ -17,7 +16,6 @@ async function getWeather(city) {
       let url = baseURL + city + '?key=' + key
       let weather = await fetch(url, {mode: 'cors'})
       weather = await weather.json()
-      console.log(weather)
       return weather
     }
 }
@@ -36,7 +34,6 @@ async function getWeatherUsingCoords(lat, lon, location) {
   let weather = await fetch(url, { mode: 'cors' });
   weather = await weather.json();
   weather.resolvedAddress = location; // override location label
-  console.log(weather);
   return weather;
 }
 
@@ -54,7 +51,6 @@ async function getCitiesSuggestion(input) {
     try {
       const response = await fetch(url, options);
       const data = await response.json();
-      console.log(data.data); // Top 5 matching cities, sorted by population
       return data.data;
     } catch (error) {
       console.error(error);
@@ -79,7 +75,6 @@ async function getCitybyCoords(lat, lon) {
     try {
         const response = await fetch(url, options);
         const data = await response.json();
-        console.log(data); // Top 5 matching cities, sorted by population
         return data.data;
     } catch (error) {
         console.error(error);
@@ -94,10 +89,9 @@ async function getAQI(lat, lon) {
     const url = baseUrl + coords
     const response = await fetch(baseUrl + coords, {mode: 'cors', headers: { 'X-Api-Key': key }})
     const aqiData = await response.json()
-    console.log(aqiData)
     return aqiData
   }
   catch {
-    console.log(aqiData)
+    console.error(error);
   }
 }

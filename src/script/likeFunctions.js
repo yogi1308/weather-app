@@ -23,7 +23,6 @@ function addToFavoritesList(name, lat, lon) {
     const newLocation = new FavoritesLocation(name, lat, lon);
     favoritesList.push(newLocation);
     localStorage.setItem('favoritesList', JSON.stringify(favoritesList));
-    console.log(getFavoritesList())
 }
 
 function removeFromFavoritesList(name, lat, lon) {
@@ -31,13 +30,10 @@ function removeFromFavoritesList(name, lat, lon) {
         !(item.name === name && item.latitude === lat && item.longitude === lon)
     );
     localStorage.setItem('favoritesList', JSON.stringify(favoritesList));
-    console.log(getFavoritesList());
 }
 
 
 function addToFavorites() {
-    console.log('favorite clicked')
-
     const unfilled = document.querySelector('.favorites');
     const filled = document.querySelector('.like-filled-icon');
 
