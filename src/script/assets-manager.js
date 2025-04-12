@@ -215,6 +215,7 @@ const conditionAliasMap = {
 function mainCardImageAndOtherStylesManager(rawConditions, currentTime, sunriseTime, sunsetTime) {
     const timeOfDay = getTimeOfDay(currentTime, sunriseTime, sunsetTime);
     const normalizedConditions = rawConditions.split(',').map(normalize);
+    console.log(timeOfDay, currentTime, sunriseTime, sunsetTime)
   
     for (const condition of normalizedConditions) {
       const key = conditionAliasMap[condition] || condition;

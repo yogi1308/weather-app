@@ -1,27 +1,7 @@
-import {getUnitGroup, setUnitGroup} from './index.js'
-
-export {getWeather, getCitiesSuggestion, getWeatherUsingCoords, getCitybyCoords, getAQI}
-
-async function getWeather(city) {
-    const key = '96QA75TCRT7MJRC6AV596A8Q8' // W2FDGJ2MLL2LU727Y6D8PWFW5, 96QA75TCRT7MJRC6AV596A8Q8 , 5J2S3WKKZUD2H6MGVCPY938LS
-    if (localStorage.getItem('unitGroup') == 'metric') {
-      const baseURL = 'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/'
-      let url = baseURL + city + '?unitGroup=metric&key=' + key
-      let weather = await fetch(url, {mode: 'cors'})
-      weather = await weather.json()
-      return weather
-    }
-    else {
-      const baseURL = 'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/'
-      let url = baseURL + city + '?key=' + key
-      let weather = await fetch(url, {mode: 'cors'})
-      weather = await weather.json()
-      return weather
-    }
-}
+export {getCitiesSuggestion, getWeatherUsingCoords, getCitybyCoords, getAQI}
 
 async function getWeatherUsingCoords(lat, lon, location) {
-  const key = '96QA75TCRT7MJRC6AV596A8Q8'; // Replace with your preferred key
+  const key = '96QA75TCRT7MJRC6AV596A8Q8'; // W2FDGJ2MLL2LU727Y6D8PWFW5, 96QA75TCRT7MJRC6AV596A8Q8 , 5J2S3WKKZUD2H6MGVCPY938LS
   const baseURL = 'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/';
   let url;
 

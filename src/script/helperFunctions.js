@@ -1,12 +1,14 @@
 import {format} from 'date-fns'
-import {getWeatherUsingCoords, getWeather, getCitybyCoords, getCitiesSuggestion, getAQI} from './api.js'
+import { formatInTimeZone } from 'date-fns-tz';
+
+import {getWeatherUsingCoords, getCitybyCoords, getCitiesSuggestion, getAQI} from './api.js'
 import {displayBasicDetails, timeIntervalId, displayAQIDetails} from './populateDOM.js'
 import {mainCardImageAndOtherStylesManager} from './assets-manager.js'
 import {displayWeatherByHours, displayWeatherByDays, getUnitGroup, setUnitGroup} from './index.js'
 import {addToFavorites, showLikedLocations} from './likeFunctions.js'
 import clearNight from '../assets/weather-images/clear_night.png'
 
-export {getWindDirection, appendElements, createAddClassAddTextAppend, getDateTime, styleSetter, manageError, displayCitySuggestions, clearCitySuggestions, handleKeyPress, addListeners, showLoader, hideLoader}
+export {getWindDirection, appendElements, createAddClassAddTextAppend, getDateTime, styleSetter, manageError, displayCitySuggestions, clearCitySuggestions, handleKeyPress, addListeners, showLoader, hideLoader, displayAllDetails, getCurrentTime}
 
 function getWindDirection(degrees) {
     const directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
@@ -85,12 +87,7 @@ function displayCitySuggestions(suggestions) {
                     showLoader()
                     let weather = await getWeatherUsingCoords(latitude, longitude, location)
                     const aqi = await getAQI(latitude, longitude);
-                    displayAQIDetails(aqi.overall_aqi)
-                    displayBasicDetails(weather);
-                    displayWeatherByHours(weather);
-                    displayWeatherByDays(weather);
-                    mainCardImageAndOtherStylesManager(weather.currentConditions.conditions, weather.currentConditions.datetime, weather.currentConditions.sunrise, weather.currentConditions.sunset)
-                    hideLoader()
+                    displayAllDetailsWOAddListeners(weather, aqi)
                     document.querySelector('#city').value = '';
                     localStorage.setItem('mostRecent', JSON.stringify({ name: location, lat: latitude, lon: longitude }));
                 }
@@ -137,12 +134,7 @@ async function handleKeyPress() {
             const locationName = `${location[0].city}, ${location[0].country}`
             let weather = await getWeatherUsingCoords(location[0].latitude, location[0].longitude, locationName)
             const aqi = await getAQI(location[0].latitude, location[0].longitude);
-            displayAQIDetails(aqi.overall_aqi)
-            displayBasicDetails(weather);
-            displayWeatherByHours(weather);
-            displayWeatherByDays(weather);
-            mainCardImageAndOtherStylesManager(weather.currentConditions.conditions, weather.currentConditions.datetime, weather.currentConditions.sunrise, weather.currentConditions.sunset)
-            hideLoader()
+            displayAllDetailsWOAddListeners(weather, aqi)
             clearCitySuggestions()
             document.querySelector('#city').value = '';
             localStorage.setItem('mostRecent', JSON.stringify({ name: locationName, lat: location[0].latitude, lon: location[0].longitude }));
@@ -184,15 +176,23 @@ function addListeners() {
           
     });
 
+    let isClickingSuggestion = false;
+
+    document.querySelector('#suggestions').addEventListener('mousedown', () => {
+    isClickingSuggestion = true;
+    });
+
     document.querySelector('#city').addEventListener('blur', () => {
-        setTimeout(() => {
-          if (cityInterval !== null) {
-            clearInterval(cityInterval);
-            cityInterval = null;
-          }
-          clearCitySuggestions();
-        }, 500); // Delay so click events on suggestions can still register
-    });     
+    setTimeout(() => {
+        if (!isClickingSuggestion) {
+        clearInterval(cityInterval);
+        cityInterval = null;
+        clearCitySuggestions();
+        }
+        isClickingSuggestion = false;
+    }, 150); // small delay to let click finish
+    });
+    
 
     document.querySelector('#city').addEventListener('keydown', (event) => {
         if (event.key === 'Enter') {
@@ -500,18 +500,7 @@ async function showCurrentLocation() {
       
           const weather = await getWeatherUsingCoords(latitude, longitude, locationName);
           const aqi = await getAQI(latitude, longitude);
-          displayAQIDetails(aqi.overall_aqi)
-          displayBasicDetails(weather);
-          displayWeatherByHours(weather);
-          displayWeatherByDays(weather);
-          addListeners();
-          mainCardImageAndOtherStylesManager(
-            weather.currentConditions.conditions,
-            weather.currentConditions.datetime,
-            weather.currentConditions.sunrise,
-            weather.currentConditions.sunset
-          );
-          hideLoader();
+          displayAllDetails(weather, aqi)
     }
     catch (error) {
         console.log(error)
@@ -519,3 +508,38 @@ async function showCurrentLocation() {
         hideLoader()
     }
 }
+
+function displayAllDetails(weather, aqi) {
+    displayBasicDetails(weather);
+    displayAQIDetails(aqi.overall_aqi)
+    displayWeatherByHours(weather);
+    displayWeatherByDays(weather);
+    mainCardImageAndOtherStylesManager(
+      weather.currentConditions.conditions,
+      getCurrentTime(weather.timezone),
+      weather.currentConditions.sunrise,
+      weather.currentConditions.sunset
+    );
+    addListeners();
+    hideLoader();
+  }
+
+  function displayAllDetailsWOAddListeners(weather, aqi) {
+    console.log(weather)
+    displayBasicDetails(weather);
+    displayAQIDetails(aqi.overall_aqi)
+    displayWeatherByHours(weather);
+    displayWeatherByDays(weather);
+    mainCardImageAndOtherStylesManager(
+      weather.currentConditions.conditions,
+      getCurrentTime(weather.timezone),
+      weather.currentConditions.sunrise,
+      weather.currentConditions.sunset
+    );
+    hideLoader();
+  }
+
+  function getCurrentTime(timezone) {
+    const now = new Date();
+    return formatInTimeZone(now, timezone, 'HH:mm:ss');
+  }

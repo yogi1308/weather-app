@@ -1,8 +1,5 @@
 import {getWeatherUsingCoords, getAQI} from './api.js'
-import {showLoader, hideLoader, addListeners} from './helperFunctions.js'
-import {displayBasicDetails, displayAQIDetails} from './populateDOM.js'
-import {displayWeatherByHours, displayWeatherByDays} from './index.js'
-import {mainCardImageAndOtherStylesManager} from './assets-manager.js'
+import {showLoader, displayAllDetails} from './helperFunctions.js'
 
 export {addToFavorites, checkLikes, showLikedLocations}
 let favoritesList = JSON.parse(localStorage.getItem('favoritesList')) || [];
@@ -80,14 +77,8 @@ function showLikedLocations() {
                 showLoader()
                 const weather = await getWeatherUsingCoords(location.latitude, location.longitude, location.name)
                 const aqi = await getAQI(location.latitude, location.longitude);
-                displayAQIDetails(aqi.overall_aqi)
-                displayBasicDetails(weather);
-                displayWeatherByHours(weather);
-                displayWeatherByDays(weather);
-                mainCardImageAndOtherStylesManager(weather.currentConditions.conditions, weather.currentConditions.datetime, weather.currentConditions.sunrise, weather.currentConditions.sunset)
-                addListeners();
+                displayAllDetails(weather, aqi)
                 document.querySelector('.favorite-locations').close();
-                hideLoader()
                 localStorage.setItem('mostRecent', JSON.stringify({ name: location.name, lat: location.latitude, lon: location.longitude }));
             })
         });

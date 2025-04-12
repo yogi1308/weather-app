@@ -1,10 +1,10 @@
 //weather alerts 
 import {format, getHours} from 'date-fns'
 import '../styles/styles.css';
-import {getCitybyCoords, getWeather, getWeatherUsingCoords, getAQI} from './api.js'
+import {getCitybyCoords, getWeatherUsingCoords, getAQI} from './api.js'
 import {mainCardImageAndOtherStylesManager} from './assets-manager.js'
 import {displayHours, displayDays, displayBasicDetails, displayAQIDetails} from './populateDOM.js'
-import {manageError, addListeners, hideLoader, showLoader} from './helperFunctions.js'
+import {addListeners, hideLoader, showLoader, displayAllDetails, getCurrentTime} from './helperFunctions.js'
 
 export {displayWeatherByHours, displayWeatherByDays}
 
@@ -28,7 +28,7 @@ if (!localStorage.getItem('unitGroup')) {
         addListeners();
         mainCardImageAndOtherStylesManager(
           weather.currentConditions.conditions,
-          weather.currentConditions.datetime,
+          getCurrentTime(weather.timezone),
           weather.currentConditions.sunrise,
           weather.currentConditions.sunset
         );
@@ -56,24 +56,12 @@ if (!localStorage.getItem('unitGroup')) {
   
       const weather = await getWeatherUsingCoords(latitude, longitude, locationName);
       const aqi = await getAQI(latitude, longitude);
-      displayBasicDetails(weather);
-      displayAQIDetails(aqi.overall_aqi)
-      displayWeatherByHours(weather);
-      displayWeatherByDays(weather);
-      addListeners();
-      mainCardImageAndOtherStylesManager(
-        weather.currentConditions.conditions,
-        weather.currentConditions.datetime,
-        weather.currentConditions.sunrise,
-        weather.currentConditions.sunset
-      );
-      hideLoader();
+      displayAllDetails(weather, aqi)
     } catch (error) {
       console.warn('Geolocation failed or permission denied:', error);
   
-      const weather = await getWeather('Paris');
+      const weather = await getWeatherUsingCoords('48.8572', '2.34141', 'Paris, France');
       const aqi = await getAQI(weather.latitude, weather.longitude);
-      weather.resolvedAddress = 'Paris, France';
   
       // Save fallback as mostRecent
       localStorage.setItem(
@@ -81,23 +69,9 @@ if (!localStorage.getItem('unitGroup')) {
         JSON.stringify({ name: 'Paris, France', lat: weather.latitude, lon: weather.longitude })
       );
   
-      displayBasicDetails(weather);
-      displayAQIDetails(aqi.overall_aqi)
-      displayWeatherByHours(weather);
-      displayWeatherByDays(weather);
-      mainCardImageAndOtherStylesManager(
-        weather.currentConditions.conditions,
-        weather.currentConditions.datetime,
-        weather.currentConditions.sunrise,
-        weather.currentConditions.sunset
-      );
-      addListeners();
-      hideLoader();
+      displayAllDetails(weather, aqi)
     }
   })();
-  
-
-
 
   function displayWeatherByHours(weather) {
     document.querySelector('.by-hours').innerHTML = '';
