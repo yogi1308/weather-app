@@ -7,6 +7,79 @@
     <link rel="icon" type="image/x-icon" href="0bbf0f212ca224660595.ico">
 <script defer src="main.js"></script></head>
 <body>
-    <h1>Weather</h1>
+    <div id="loader" class="loader">
+        <object type="image/svg+xml" data="db46277d2aa4c3d59f30.svg" style="width: 5rem; height: 5rem;"></object>
+    </div>
+    <div id="content">
+        <div class="header">
+            <div class="search-container">
+                <input type="text" id="city" placeholder="Enter city name" autocomplete="off">
+                <button class="search-icon"><img src="51e094f740a091eb8f02.svg" alt="search icon"></button>
+            </div>
+            <div class="suggestions-container">
+                <ul id="suggestions"></ul>
+            </div>
+            <div class="header-icons">
+                <img src="c4c45d8cbcec4a9ef1df.svg" alt="location-icon" class="location-icon">
+                <img src="203e1aba6b7ad0f06eef.svg" alt="favorites" class="favorites">
+                <img src="da458e9613301a4aa51b.svg" alt="favorites" class="like-filled-icon" style="display: none;">
+                <img src="b085db55f28f17330efc.svg" alt="settings" class="settings">
+            </div>
+        </div>
+        <div class="main">
+            <div class="basic-weather-details">
+                <div class="basic-info">
+                    <div class="location"></div>
+                    <div class="coordinates"></div>
+                    <div class="time"></div>
+                    <div class="all-temp">
+                        <div class="temp"></div>
+                        <div class="min-max">
+                            <div class="max"></div>
+                            <div class="min"></div>
+                        </div>
+                    </div>
+                    <div class="feels-like"></div>
+                    <div class="weather-condition"></div>
+                    <div class="weather-desc"></div>
+                    <div class="alert"><span><img src="3103313a45abd67f614c.svg" alt=""></span></div>
+                    <div class="other-details">
+                        <div class="humidity"><span><img src="958803bd45db57fbe539.svg" alt="humidity-icon"></span></div>
+                        <div class="humidity-value"></div>
+                        <div class="wind"><span><img src="7cedfceb977ea50e6e82.svg" alt="wind-icon"></span></div>
+                        <div class="wind-value"></div>
+                        <div class="precipitation-chances"><span><img src="8ba1ece4f2f4c3834e8b.svg" alt="precipitation-chances"></span></div>
+                        <div class="precipitation-chances-value"></div>
+                        <div class="aqi"><span><img src="02258759045181280eff.svg" alt=""></span>Air Quality</div>
+                        <div class="aqi-value"></div>
+                        <div class="uv-index"><span><img src="e42373a5b00909d7c795.svg" alt="uv-index-icon"></span></div>
+                        <div class="uv-index-value"></div>
+                        <div class="sunrise"><span><img src="4bfa4e00d2df54dcbb01.svg" alt="sunrise"></span></div>
+                        <div class="sunrise-value"></div>
+                        <div class="sunset"><span><img src="02e3b9755533866bb68d.svg" alt="sunset"></span></div>
+                        <div class="sunset-value"></div>
+                    </div>
+                    <span></span><div class="hi"></div></span>
+                </div>
+            </div>
+            <div class="hours-days">
+                <p class="next-hours">Next Hours</p>
+                <div class="by-hours"></div>
+                <p class="next-days">Next Days</p>
+                <div class="by-days"></div>
+            </div>
+        </div>
+        <dialog class="likes-or-change-units">
+            <button class="close-button">X</button>
+            <ul>
+                <li class="change-units"></li>
+                <li class="show-favorite-locations">Show Favovorite Locations</li>
+            </ul>
+        </dialog>
+        <dialog class="favorite-locations">
+            <button class="close-button">X</button>
+            <ul class="favorite-locations-ul"></ul>
+        </dialog>
+    </div>
 </body>
 </html>
